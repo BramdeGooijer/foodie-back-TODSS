@@ -1,0 +1,16 @@
+global using AutoMapper;
+global using AutoMapper.QueryableExtensions;
+global using FluentValidation;
+global using MediatR;
+global using Microsoft.EntityFrameworkCore;
+global using Template.Application.Common.Exceptions;
+global using Template.Application.Common.Interfaces;
+global using Template.Application.Common.Mappings;
+global using Template.Application.Common.Models;
+global using Template.Application.Common.Security;
+global using Template.Application.Common.Validators;
+global using Template.Application.Dtos;
+global using Template.Domain.Common;
+global using Template.Domain.Entities;
+global using Template.Domain.Enums;
+global using Template.Domain.Events;
