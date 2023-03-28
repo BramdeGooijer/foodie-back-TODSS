@@ -4,9 +4,9 @@ using Template.Domain.Entities;
 
 namespace Template.Infrastructure.Persistence.Configurations;
 
-public class GerechtConfiguration : IEntityTypeConfiguration<Gerecht>
+public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 {
-	public void Configure(EntityTypeBuilder<Gerecht> builder)
+	public void Configure(EntityTypeBuilder<Recipe> builder)
 	{
 		
 	}

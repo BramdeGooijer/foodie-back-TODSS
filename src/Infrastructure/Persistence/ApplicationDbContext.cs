@@ -26,6 +26,7 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 		_auditableEntityInterceptor = auditableEntityInterceptor;
 	}
 
+	public DbSet<Recipe> Recipes => Set<Recipe>();
 	public DbSet<TodoList> TodoLists => Set<TodoList>();
 
 	public DbSet<TodoItem> TodoItems => Set<TodoItem>();
