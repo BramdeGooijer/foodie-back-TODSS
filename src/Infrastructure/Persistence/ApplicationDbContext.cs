@@ -38,6 +38,8 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 	public DbSet<Requirement> Requirements => Set<Requirement>();
 	
 	public DbSet<CookingStep> CookingSteps => Set<CookingStep>();
+	
+	public DbSet<Category> Category => Set<Category>();
 
 	public DbSet<TodoList> TodoLists => Set<TodoList>();
 
