@@ -26,6 +26,18 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CookingSteps",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CookingSteps", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "IdentityRoles",
                 columns: table => new
                 {
@@ -66,19 +78,28 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recipes",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     name = table.Column<string>(type: "text", nullable: false),
-                    subname = table.Column<string>(type: "text", nullable: false),
-                    plusRecipe = table.Column<bool>(type: "boolean", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
-                    prepTimeMinutes = table.Column<int>(type: "integer", nullable: false)
+                    amount = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requirements",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requirements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -234,7 +255,9 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    IdentityId = table.Column<string>(type: "text", nullable: false)
+                    IdentityId = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    isSubscriber = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -245,6 +268,24 @@ namespace Template.Infrastructure.Migrations
                         principalTable: "IdentityUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Allergies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    typeOfAllergy = table.Column<string>(type: "text", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Allergies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Allergies_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -273,6 +314,148 @@ namespace Template.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    subname = table.Column<string>(type: "text", nullable: false),
+                    plusRecipe = table.Column<bool>(type: "boolean", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    prepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
+                    requirementId = table.Column<Guid>(type: "uuid", nullable: false),
+                    cookingStepId = table.Column<Guid>(type: "uuid", nullable: false),
+                    allSeasons = table.Column<int[]>(type: "integer[]", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Recipes_CookingSteps_cookingStepId",
+                        column: x => x.cookingStepId,
+                        principalTable: "CookingSteps",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Requirements_requirementId",
+                        column: x => x.requirementId,
+                        principalTable: "Requirements",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipes_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Category",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Category_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DietaryPreference",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DietaryPreference", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DietaryPreference_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DietaryPreference_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    amount = table.Column<string>(type: "text", nullable: false),
+                    productId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Products_productId",
+                        column: x => x.productId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrepDifficulty",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrepDifficulty", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PrepDifficulty_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Allergies_ProductId",
+                table: "Allergies",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Category_RecipeId",
+                table: "Category",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DietaryPreference_RecipeId",
+                table: "DietaryPreference",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DietaryPreference_UserId",
+                table: "DietaryPreference",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityRoleClaims_RoleId",
@@ -312,6 +495,36 @@ namespace Template.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_productId",
+                table: "Ingredients",
+                column: "productId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_RecipeId",
+                table: "Ingredients",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrepDifficulty_RecipeId",
+                table: "PrepDifficulty",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_cookingStepId",
+                table: "Recipes",
+                column: "cookingStepId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_requirementId",
+                table: "Recipes",
+                column: "requirementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_UserId",
+                table: "Recipes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_ClientId",
                 table: "RefreshTokens",
                 column: "ClientId");
@@ -337,6 +550,15 @@ namespace Template.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Allergies");
+
+            migrationBuilder.DropTable(
+                name: "Category");
+
+            migrationBuilder.DropTable(
+                name: "DietaryPreference");
+
+            migrationBuilder.DropTable(
                 name: "IdentityRoleClaims");
 
             migrationBuilder.DropTable(
@@ -352,7 +574,10 @@ namespace Template.Infrastructure.Migrations
                 name: "IdentityUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Recipes");
+                name: "Ingredients");
+
+            migrationBuilder.DropTable(
+                name: "PrepDifficulty");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -361,16 +586,28 @@ namespace Template.Infrastructure.Migrations
                 name: "TodoItems");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "IdentityRoles");
 
             migrationBuilder.DropTable(
-                name: "IdentityRoles");
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "TodoLists");
+
+            migrationBuilder.DropTable(
+                name: "CookingSteps");
+
+            migrationBuilder.DropTable(
+                name: "Requirements");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "IdentityUsers");
