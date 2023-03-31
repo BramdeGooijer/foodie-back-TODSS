@@ -12,7 +12,7 @@ using Template.Infrastructure.Persistence;
 namespace Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230209225821_Init")]
+    [Migration("20230331085125_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -155,6 +155,35 @@ namespace Template.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("IdentityUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("plusRecipe")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("prepTimeMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("subname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.TodoItem", b =>

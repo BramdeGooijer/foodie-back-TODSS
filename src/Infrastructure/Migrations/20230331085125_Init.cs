@@ -66,6 +66,22 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Recipes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    subname = table.Column<string>(type: "text", nullable: false),
+                    plusRecipe = table.Column<bool>(type: "boolean", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    prepTimeMinutes = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TodoLists",
                 columns: table => new
                 {
@@ -334,6 +350,9 @@ namespace Template.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "IdentityUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Recipes");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
