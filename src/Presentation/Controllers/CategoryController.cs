@@ -1,27 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Template.Application.Common.Interfaces;
+using Template.Application.Logic.Category;
 using Template.Domain.Entities;
+using Template.Infrastructure.Persistence;
 
 namespace Template.Presentation.Controllers;
 
 public class CategoryController : ApiControllerBase
 {
-	private readonly IApplicationDbContext _context;
+	private readonly ApplicationDbContext _context;
+	private readonly CategoryLogic _categoryLogic;
 
-	public CategoryController(IApplicationDbContext context)
+	public CategoryController(ApplicationDbContext context)
 	{
 		_context = context;
+		_categoryLogic = new CategoryLogic(context);
 	}
 
 	[HttpGet]
 	public List<Category> getMockCategories()
 	{
-		List<Category> allCategoies = new List<Category>();
-		foreach (Category perCategory in _context.Category)
-		{
-			allCategoies.Add(perCategory);
-		}
-
-		return allCategoies;
+		return _categoryLogic.getAllCategories();
 	}
 }
