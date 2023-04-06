@@ -103,7 +103,18 @@ public class ApplicationDbContextInitialiser
 			});
 
 			Recipe recipe = new Recipe("Appeltaart", "subAppelTaart", false, "descriptie", 20);
+			Category category = new Category("dessert");
+			recipe.allCategories.Add(category);
+			
+			Recipe recipe2 = new Recipe("Marrokaanse quinoa salade", "salade", true, "descriptie", 20);
+			Category category2 = new Category("ontbijt");
+			Category category3 = new Category("diner");
+			recipe2.allCategories.Add(category2);
+			recipe2.allCategories.Add(category3);
+
+			
 			_context.Recipes.Add(recipe);
+			_context.Recipes.Add(recipe2);
 
 			await _context.SaveChangesAsync();
 		}

@@ -8,6 +8,8 @@ public interface IApplicationDbContext
 
 	DbSet<User> Users { get; }
 	
+	DbSet<Recipe> Recipes { get; }
+
 	DbSet<Category> Category { get; }
 
 	Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);

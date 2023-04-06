@@ -8,9 +8,8 @@ public class Category : BaseEntity
 	{
 	}
 
-	public Category(string name, List<Recipe> recipes)
+	public Category(string name)
 	{
 		this.name = name;
-		this.recipes = recipes;
 	}
 }

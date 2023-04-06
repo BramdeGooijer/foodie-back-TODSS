@@ -7,7 +7,7 @@ public class Recipe : BaseEntity
 	public bool plusRecipe {get; set;}
 	public string description {get; set;}
 	public int prepTimeMinutes { get; set;}
-	public List<Requirement> requirement { get; set; } = new();
+	public List<Requirement> requirements { get; set; } = new();
 	public List<CookingStep> cookingStep { get; set; } = new();
 	public List<Season> allSeasons { get; set; } = new();
 	public List<Category> allCategories { get; set; } = new();
@@ -41,7 +41,7 @@ public class Recipe : BaseEntity
 		bool plusRecipe, 
 		string description, 
 		int prepTimeMinutes, 
-		List<Requirement> requirement, 
+		List<Requirement> requirements, 
 		List<CookingStep> cookingStep, 
 		List<Season> allSeasons,
 		List<Category> allCategories, 
@@ -56,7 +56,7 @@ public class Recipe : BaseEntity
 		this.plusRecipe = plusRecipe;
 		this.description = description;
 		this.prepTimeMinutes = prepTimeMinutes;
-		this.requirement = requirement;
+		this.requirements = requirements;
 		this.cookingStep = cookingStep;
 		this.allSeasons = allSeasons;
 		this.allCategories = allCategories;

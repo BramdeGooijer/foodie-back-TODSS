@@ -803,7 +803,7 @@ namespace Template.Infrastructure.Migrations
             modelBuilder.Entity("Template.Domain.Entities.Requirement", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Recipe", null)
-                        .WithMany("requirement")
+                        .WithMany("requirements")
                         .HasForeignKey("RecipeId");
                 });
 
@@ -876,7 +876,7 @@ namespace Template.Infrastructure.Migrations
                 {
                     b.Navigation("cookingStep");
 
-                    b.Navigation("requirement");
+                    b.Navigation("requirements");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.TodoList", b =>

@@ -8,12 +8,10 @@ namespace Template.Presentation.Controllers;
 
 public class CategoryController : ApiControllerBase
 {
-	private readonly ApplicationDbContext _context;
 	private readonly CategoryLogic _categoryLogic;
 
 	public CategoryController(ApplicationDbContext context)
 	{
-		_context = context;
 		_categoryLogic = new CategoryLogic(context);
 	}
 
