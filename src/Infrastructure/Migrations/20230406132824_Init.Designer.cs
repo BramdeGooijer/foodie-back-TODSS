@@ -12,7 +12,7 @@ using Template.Infrastructure.Persistence;
 namespace Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230406125019_Init")]
+    [Migration("20230406132824_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -27,15 +27,15 @@ namespace Template.Infrastructure.Migrations
 
             modelBuilder.Entity("CategoryRecipe", b =>
                 {
+                    b.Property<Guid>("RecipeId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("allCategoriesId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("recipesId")
-                        .HasColumnType("uuid");
+                    b.HasKey("RecipeId", "allCategoriesId");
 
-                    b.HasKey("allCategoriesId", "recipesId");
-
-                    b.HasIndex("recipesId");
+                    b.HasIndex("allCategoriesId");
 
                     b.ToTable("CategoryRecipe");
                 });
@@ -640,15 +640,15 @@ namespace Template.Infrastructure.Migrations
 
             modelBuilder.Entity("CategoryRecipe", b =>
                 {
-                    b.HasOne("Template.Domain.Entities.Category", null)
+                    b.HasOne("Template.Domain.Entities.Recipe", null)
                         .WithMany()
-                        .HasForeignKey("allCategoriesId")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Template.Domain.Entities.Recipe", null)
+                    b.HasOne("Template.Domain.Entities.Category", null)
                         .WithMany()
-                        .HasForeignKey("recipesId")
+                        .HasForeignKey("allCategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -13,13 +13,16 @@ public class RecipeLogic
 
 	public List<Recipe> getAllRecipes()
 	{
-		DbSet<Recipe> recipesDB = _context.Recipes;
-		List<Recipe> recipes = new();
-		foreach (Recipe perRecipe in recipesDB)
-		{
-			recipes.Add(perRecipe);
-		}
+		List<Recipe> recipesDB = _context.Recipes
+			.Include(recipe => recipe.allCategories)
+			.Include(recipe => recipe.allIngredients)
+			.Include(recipe => recipe.requirements)
+			.Include(recipe => recipe.allSeasons)
+			.Include(recipe => recipe.cookingStep)
+			.Include(recipe => recipe.allDietaryPreferences)
+			.Include(recipe => recipe.allPrepDifficulties)
+			.ToList();
 
-		return recipes;
+		return recipesDB;
 	}
 }

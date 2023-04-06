@@ -1,4 +1,6 @@
-﻿namespace Template.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Template.Domain.Entities;
 
 public class Recipe : BaseEntity
 {
@@ -64,4 +66,5 @@ public class Recipe : BaseEntity
 		this.allDietaryPreferences = allDietaryPreferences;
 		this.allIngredients = allIngredients;
 	}
+	
 }

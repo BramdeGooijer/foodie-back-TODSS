@@ -390,12 +390,12 @@ namespace Template.Infrastructure.Migrations
                 name: "CategoryRecipe",
                 columns: table => new
                 {
-                    allCategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: false),
+                    allCategoriesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryRecipe", x => new { x.allCategoriesId, x.recipesId });
+                    table.PrimaryKey("PK_CategoryRecipe", x => new { x.RecipeId, x.allCategoriesId });
                     table.ForeignKey(
                         name: "FK_CategoryRecipe_Category_allCategoriesId",
                         column: x => x.allCategoriesId,
@@ -403,8 +403,8 @@ namespace Template.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryRecipe_Recipes_recipesId",
-                        column: x => x.recipesId,
+                        name: "FK_CategoryRecipe_Recipes_RecipeId",
+                        column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -548,9 +548,9 @@ namespace Template.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryRecipe_recipesId",
+                name: "IX_CategoryRecipe_allCategoriesId",
                 table: "CategoryRecipe",
-                column: "recipesId");
+                column: "allCategoriesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CookingSteps_RecipeId",

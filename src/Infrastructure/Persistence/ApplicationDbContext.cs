@@ -59,6 +59,10 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 		builder.AddEnumStringConversions();
 
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+		
+		builder.Entity<Recipe>()
+			.HasMany(e => e.allCategories)
+			.WithMany();
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
