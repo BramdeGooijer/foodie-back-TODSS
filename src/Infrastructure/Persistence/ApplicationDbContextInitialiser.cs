@@ -102,6 +102,9 @@ public class ApplicationDbContextInitialiser
 				}
 			});
 
+			Recipe recipe = new Recipe("Appeltaart", "subAppelTaart", false, "descriptie", 20);
+			_context.Recipes.Add(recipe);
+
 			await _context.SaveChangesAsync();
 		}
 	}

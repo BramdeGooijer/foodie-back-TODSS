@@ -2,18 +2,18 @@
 
 public class Recipe : BaseEntity
 {
-	public required string name {get; set;}
-	public required string subname {get; set;}
+	public string name {get; set;}
+	public string subname {get; set;}
 	public bool plusRecipe {get; set;}
-	public required string description {get; set;}
+	public string description {get; set;}
 	public int prepTimeMinutes { get; set;}
-	public Requirement requirement { get; set; }
-	public CookingStep cookingStep { get; set; }
-	public List<Season> allSeasons { get; set; }
-	public ICollection<Category> allCategories { get; set; }
-	public ICollection<PrepDifficulty> allPrepDifficulties { get; set; }
-	public ICollection<DietaryPreference> allDietaryPreferences { get; set; }
-	public ICollection<Ingredient> allIngredients { get; set; }
+	public List<Requirement> requirement { get; set; } = new();
+	public List<CookingStep> cookingStep { get; set; } = new();
+	public List<Season> allSeasons { get; set; } = new();
+	public List<Category> allCategories { get; set; } = new();
+	public List<PrepDifficulty> allPrepDifficulties { get; set; } = new();
+	public List<DietaryPreference> allDietaryPreferences { get; set; } = new();
+	public List<Ingredient> allIngredients { get; set; } = new();
 
 	public Recipe()
 	{
@@ -24,15 +24,32 @@ public class Recipe : BaseEntity
 		string subname, 
 		bool plusRecipe, 
 		string description, 
+		int prepTimeMinutes 
+	)
+	
+	{
+		this.name = name;
+		this.subname = subname;
+		this.plusRecipe = plusRecipe;
+		this.description = description;
+		this.prepTimeMinutes = prepTimeMinutes;
+	}
+	
+	public Recipe(
+		string name, 
+		string subname, 
+		bool plusRecipe, 
+		string description, 
 		int prepTimeMinutes, 
-		Requirement requirement, 
-		CookingStep cookingStep, 
-		List<Season> allSeasons, 
+		List<Requirement> requirement, 
+		List<CookingStep> cookingStep, 
+		List<Season> allSeasons,
 		List<Category> allCategories, 
 		List<PrepDifficulty> allPrepDifficulties, 
 		List<DietaryPreference> allDietaryPreferences, 
 		List<Ingredient> allIngredients
-		)
+	)
+	
 	{
 		this.name = name;
 		this.subname = subname;
