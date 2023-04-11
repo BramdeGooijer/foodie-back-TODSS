@@ -2,18 +2,8 @@
 
 public class Product : BaseEntity
 {
-	public string Name { get; set; }
-	public string Amount { get; set; }
-	public ICollection<Allergy> AllAllergies { get; set; }
+	public required string Name { get; set; }
+	public required string Amount { get; set; }
+	public List<Allergy> AllAllergies { get; set; } = new();
 
-	public Product()
-	{
-	}
-
-	public Product(string name, string amount, List<Allergy> allAllergies)
-	{
-		this.Name = name;
-		this.Amount = amount;
-		this.AllAllergies = allAllergies;
-	}
 }

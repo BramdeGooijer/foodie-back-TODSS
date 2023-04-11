@@ -9,14 +9,4 @@ public class Ingredient : BaseEntity
 	
 	public List<Recipe> Recipes { get; set; } = new();
 
-	public Ingredient()
-	{
-	}
-
-	public Ingredient(string amount, Product product, List<Recipe> recipes)
-	{
-		this.Amount = amount;
-		this.Product = product;
-		this.Recipes = recipes;
-	}
 }

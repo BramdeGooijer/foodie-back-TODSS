@@ -41,7 +41,7 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 
 	public DbSet<Season> Seasons => Set<Season>();
 
-	public DbSet<Category> Category => Set<Category>();
+	public DbSet<Category> Categories => Set<Category>();
 
 	public DbSet<TodoList> TodoLists => Set<TodoList>();
 

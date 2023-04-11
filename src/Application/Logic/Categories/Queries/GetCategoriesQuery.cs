@@ -15,7 +15,7 @@ internal class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, I
 
 	public async Task<IList<CategoryDto>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
 	{
-		var categories = await _context.Category
+		var categories = await _context.Categories
 			.ToListAsync(cancellationToken);
 
 		return _mapper.Map<IList<CategoryDto>>(categories);

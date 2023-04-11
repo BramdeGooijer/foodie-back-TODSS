@@ -13,15 +13,15 @@ namespace Template.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Category",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Category", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,7 +82,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,8 +94,8 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    amount = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Amount = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -107,7 +107,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    season = table.Column<string>(type: "text", nullable: false)
+                    SeasonName = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -268,8 +268,8 @@ namespace Template.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IdentityId = table.Column<string>(type: "text", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    isSubscriber = table.Column<bool>(type: "boolean", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    IsSubscriber = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,7 +287,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    typeOfAllergy = table.Column<string>(type: "text", nullable: false),
+                    TypeOfAllergy = table.Column<string>(type: "text", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -305,15 +305,15 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    amount = table.Column<string>(type: "text", nullable: false),
-                    productId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Amount = table.Column<string>(type: "text", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Ingredients_Products_productId",
-                        column: x => x.productId,
+                        name: "FK_Ingredients_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -351,7 +351,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -369,11 +369,11 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
-                    subname = table.Column<string>(type: "text", nullable: false),
-                    plusRecipe = table.Column<bool>(type: "boolean", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
-                    prepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    SubName = table.Column<string>(type: "text", nullable: false),
+                    PlusRecipe = table.Column<bool>(type: "boolean", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    PrepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -390,16 +390,16 @@ namespace Template.Infrastructure.Migrations
                 name: "CategoryRecipe",
                 columns: table => new
                 {
-                    RecipeId = table.Column<Guid>(type: "uuid", nullable: false),
-                    allCategoriesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryRecipe", x => new { x.RecipeId, x.allCategoriesId });
+                    table.PrimaryKey("PK_CategoryRecipe", x => new { x.CategoriesId, x.RecipeId });
                     table.ForeignKey(
-                        name: "FK_CategoryRecipe_Category_allCategoriesId",
-                        column: x => x.allCategoriesId,
-                        principalTable: "Category",
+                        name: "FK_CategoryRecipe_Categories_CategoriesId",
+                        column: x => x.CategoriesId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -415,7 +415,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -432,21 +432,21 @@ namespace Template.Infrastructure.Migrations
                 name: "DietaryPreferenceRecipe",
                 columns: table => new
                 {
-                    allDietaryPreferencesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    DietaryPreferencesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DietaryPreferenceRecipe", x => new { x.allDietaryPreferencesId, x.recipesId });
+                    table.PrimaryKey("PK_DietaryPreferenceRecipe", x => new { x.DietaryPreferencesId, x.RecipesId });
                     table.ForeignKey(
-                        name: "FK_DietaryPreferenceRecipe_DietaryPreference_allDietaryPrefere~",
-                        column: x => x.allDietaryPreferencesId,
+                        name: "FK_DietaryPreferenceRecipe_DietaryPreference_DietaryPreference~",
+                        column: x => x.DietaryPreferencesId,
                         principalTable: "DietaryPreference",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DietaryPreferenceRecipe_Recipes_recipesId",
-                        column: x => x.recipesId,
+                        name: "FK_DietaryPreferenceRecipe_Recipes_RecipesId",
+                        column: x => x.RecipesId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -456,21 +456,21 @@ namespace Template.Infrastructure.Migrations
                 name: "IngredientRecipe",
                 columns: table => new
                 {
-                    allIngredientsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    IngredientsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_IngredientRecipe", x => new { x.allIngredientsId, x.recipesId });
+                    table.PrimaryKey("PK_IngredientRecipe", x => new { x.IngredientsId, x.RecipesId });
                     table.ForeignKey(
-                        name: "FK_IngredientRecipe_Ingredients_allIngredientsId",
-                        column: x => x.allIngredientsId,
+                        name: "FK_IngredientRecipe_Ingredients_IngredientsId",
+                        column: x => x.IngredientsId,
                         principalTable: "Ingredients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_IngredientRecipe_Recipes_recipesId",
-                        column: x => x.recipesId,
+                        name: "FK_IngredientRecipe_Recipes_RecipesId",
+                        column: x => x.RecipesId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -480,21 +480,21 @@ namespace Template.Infrastructure.Migrations
                 name: "PrepDifficultyRecipe",
                 columns: table => new
                 {
-                    allPrepDifficultiesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    PrepDifficultiesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecipesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrepDifficultyRecipe", x => new { x.allPrepDifficultiesId, x.recipesId });
+                    table.PrimaryKey("PK_PrepDifficultyRecipe", x => new { x.PrepDifficultiesId, x.RecipesId });
                     table.ForeignKey(
-                        name: "FK_PrepDifficultyRecipe_PrepDifficulty_allPrepDifficultiesId",
-                        column: x => x.allPrepDifficultiesId,
+                        name: "FK_PrepDifficultyRecipe_PrepDifficulty_PrepDifficultiesId",
+                        column: x => x.PrepDifficultiesId,
                         principalTable: "PrepDifficulty",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PrepDifficultyRecipe_Recipes_recipesId",
-                        column: x => x.recipesId,
+                        name: "FK_PrepDifficultyRecipe_Recipes_RecipesId",
+                        column: x => x.RecipesId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -504,21 +504,21 @@ namespace Template.Infrastructure.Migrations
                 name: "RecipeSeason",
                 columns: table => new
                 {
-                    allSeasonsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    recipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                    RecipesId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SeasonsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RecipeSeason", x => new { x.allSeasonsId, x.recipesId });
+                    table.PrimaryKey("PK_RecipeSeason", x => new { x.RecipesId, x.SeasonsId });
                     table.ForeignKey(
-                        name: "FK_RecipeSeason_Recipes_recipesId",
-                        column: x => x.recipesId,
+                        name: "FK_RecipeSeason_Recipes_RecipesId",
+                        column: x => x.RecipesId,
                         principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeSeason_Seasons_allSeasonsId",
-                        column: x => x.allSeasonsId,
+                        name: "FK_RecipeSeason_Seasons_SeasonsId",
+                        column: x => x.SeasonsId,
                         principalTable: "Seasons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -529,7 +529,7 @@ namespace Template.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -548,9 +548,9 @@ namespace Template.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryRecipe_allCategoriesId",
+                name: "IX_CategoryRecipe_RecipeId",
                 table: "CategoryRecipe",
-                column: "allCategoriesId");
+                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CookingSteps_RecipeId",
@@ -563,9 +563,9 @@ namespace Template.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DietaryPreferenceRecipe_recipesId",
+                name: "IX_DietaryPreferenceRecipe_RecipesId",
                 table: "DietaryPreferenceRecipe",
-                column: "recipesId");
+                column: "RecipesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityRoleClaims_RoleId",
@@ -605,19 +605,19 @@ namespace Template.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientRecipe_recipesId",
+                name: "IX_IngredientRecipe_RecipesId",
                 table: "IngredientRecipe",
-                column: "recipesId");
+                column: "RecipesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_productId",
+                name: "IX_Ingredients_ProductId",
                 table: "Ingredients",
-                column: "productId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PrepDifficultyRecipe_recipesId",
+                name: "IX_PrepDifficultyRecipe_RecipesId",
                 table: "PrepDifficultyRecipe",
-                column: "recipesId");
+                column: "RecipesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Recipes_UserId",
@@ -625,9 +625,9 @@ namespace Template.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RecipeSeason_recipesId",
+                name: "IX_RecipeSeason_SeasonsId",
                 table: "RecipeSeason",
-                column: "recipesId");
+                column: "SeasonsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_ClientId",
@@ -705,7 +705,7 @@ namespace Template.Infrastructure.Migrations
                 name: "TodoItems");
 
             migrationBuilder.DropTable(
-                name: "Category");
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "DietaryPreference");

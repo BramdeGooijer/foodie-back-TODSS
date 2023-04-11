@@ -2,14 +2,6 @@
 
 public class CookingStep : BaseEntity
 {
-	public string Description { get; set; }
-
-	public CookingStep()
-	{
-	}
-
-	public CookingStep(string description)
-	{
-		this.Description = description;
-	}
+	public required string Description { get; set; }
+	
 }

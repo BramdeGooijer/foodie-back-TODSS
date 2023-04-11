@@ -2,14 +2,5 @@
 
 public class Requirement : BaseEntity
 {
-	public string Name { get; set; }
-
-	public Requirement()
-	{
-	}
-
-	public Requirement(string name)
-	{
-		this.Name = name;
-	}
+	public required string Name { get; set; }
 }

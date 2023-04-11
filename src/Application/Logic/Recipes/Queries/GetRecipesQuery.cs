@@ -12,7 +12,7 @@ public class GetRecipesQueryValidator : AbstractValidator<GetRecipesQuery>
 	public GetRecipesQueryValidator(IApplicationDbContext context)
 	{
 		RuleFor(query => query.CategoryId!.Value)
-			.Exists(context.Category)
+			.Exists(context.Categories)
 			.When(query => query.CategoryId.HasValue);
 	}
 }
@@ -38,6 +38,7 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 			.Include(recipe => recipe.CookingStep)
 			.Include(recipe => recipe.DietaryPreferences)
 			.Include(recipe => recipe.PrepDifficulties)
+			.OrderBy(recipe => recipe.Name)
 			.AsQueryable();
 
 		if (request.CategoryId.HasValue)
