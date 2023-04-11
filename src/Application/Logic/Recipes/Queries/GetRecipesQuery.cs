@@ -4,16 +4,13 @@ public record GetRecipesQuery : IRequest<PaginatedList<RecipeDto>>
 {
 	public int? PageNumber { get; init; }
 	public int? PageSize { get; init; }
-	public Guid? CategoryId { get; init; }
+	public string? CategoryName { get; init; }
 }
 
 public class GetRecipesQueryValidator : AbstractValidator<GetRecipesQuery>
 {
 	public GetRecipesQueryValidator(IApplicationDbContext context)
 	{
-		RuleFor(query => query.CategoryId!.Value)
-			.Exists(context.Categories)
-			.When(query => query.CategoryId.HasValue);
 	}
 }
 
@@ -31,7 +28,6 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 	public async Task<PaginatedList<RecipeDto>> Handle(GetRecipesQuery request, CancellationToken cancellationToken)
 	{
 		var query = _context.Recipes
-			.Include(recipe => recipe.Categories)
 			.Include(recipe => recipe.Ingredients)
 			.Include(recipe => recipe.Requirements)
 			.Include(recipe => recipe.Seasons)
@@ -41,8 +37,8 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 			.OrderBy(recipe => recipe.Name)
 			.AsQueryable();
 
-		if (request.CategoryId.HasValue)
-			query = query.Where(r => r.Categories.Any(c => c.Id == request.CategoryId.Value));
+		if (request.CategoryName != null)
+			query = query.Where(r => r.Categories.Any(c => c == request.CategoryName));
 		
 		return await query.MapToPaginatedListAsync<Recipe, RecipeDto>(_mapper.ConfigurationProvider, request.PageNumber, request.PageSize, cancellationToken);
 	}

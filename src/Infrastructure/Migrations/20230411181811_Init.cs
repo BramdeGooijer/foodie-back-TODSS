@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,18 +13,6 @@ namespace Template.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
@@ -374,6 +363,7 @@ namespace Template.Infrastructure.Migrations
                     PlusRecipe = table.Column<bool>(type: "boolean", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     PrepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
+                    Categories = table.Column<List<string>>(type: "text[]", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
@@ -384,30 +374,6 @@ namespace Template.Infrastructure.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryRecipe",
-                columns: table => new
-                {
-                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    RecipeId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryRecipe", x => new { x.CategoriesId, x.RecipeId });
-                    table.ForeignKey(
-                        name: "FK_CategoryRecipe_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryRecipe_Recipes_RecipeId",
-                        column: x => x.RecipeId,
-                        principalTable: "Recipes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -548,11 +514,6 @@ namespace Template.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryRecipe_RecipeId",
-                table: "CategoryRecipe",
-                column: "RecipeId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CookingSteps_RecipeId",
                 table: "CookingSteps",
                 column: "RecipeId");
@@ -663,9 +624,6 @@ namespace Template.Infrastructure.Migrations
                 name: "Allergies");
 
             migrationBuilder.DropTable(
-                name: "CategoryRecipe");
-
-            migrationBuilder.DropTable(
                 name: "CookingSteps");
 
             migrationBuilder.DropTable(
@@ -703,9 +661,6 @@ namespace Template.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TodoItems");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "DietaryPreference");

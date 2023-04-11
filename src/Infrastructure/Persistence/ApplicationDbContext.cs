@@ -41,8 +41,6 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 
 	public DbSet<Season> Seasons => Set<Season>();
 
-	public DbSet<Category> Categories => Set<Category>();
-
 	public DbSet<TodoList> TodoLists => Set<TodoList>();
 
 	public DbSet<TodoItem> TodoItems => Set<TodoItem>();
@@ -60,9 +58,6 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		
-		builder.Entity<Recipe>()
-			.HasMany(e => e.Categories)
-			.WithMany();
 	}
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -101,31 +101,6 @@ public class ApplicationDbContextInitialiser
 					new TodoItem { Title = "Reward yourself with a nice, long nap 🏆" },
 				}
 			});
-			
-			Category dessert = new()
-			{
-				Name = "Dessert"
-			};
-			Category ontbijt = new()
-			{
-				Name = "Ontbijt"
-			};
-			Category diner = new()
-			{
-				Name = "Diner"
-			};
-			Category lunch = new()
-			{
-				Name = "Lunch"
-			};
-			Category drankje = new()
-			{
-				Name = "Drankje"
-			};
-			Category borrelhapje = new()
-			{
-				Name = "Borrelhapje"
-			};
 
 			_context.Recipes.Add(new Recipe
 			{
@@ -134,9 +109,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "descriptie",
 				PrepTimeMinutes = 20,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					dessert
+					"dessert"
 				}
 			});
 			_context.Recipes.Add(new Recipe
@@ -146,10 +121,10 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "descriptie",
 				PrepTimeMinutes = 20,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					ontbijt,
-					diner
+					"ontbijt",
+					"diner"
 				}
 			});
 			_context.Recipes.Add(new Recipe
@@ -159,9 +134,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Thinly sliced beef and tender-crisp broccoli florets in a savory sauce served over steamed rice.",
 				PrepTimeMinutes = 25,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			_context.Recipes.Add(new Recipe
@@ -171,10 +146,10 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Rotini pasta tossed with fresh basil pesto, cherry tomatoes, and diced mozzarella cheese.",
 				PrepTimeMinutes = 20,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					ontbijt,
-					diner
+					"ontbijt",
+					"diner"
 				}
 			});
 			
@@ -185,9 +160,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Comforting tomato soup made with fresh tomatoes, cream, and a hint of basil.",
 				PrepTimeMinutes = 35,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -198,9 +173,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Breaded chicken breasts smothered in marinara sauce and melted mozzarella cheese.",
 				PrepTimeMinutes = 40,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -211,10 +186,10 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Flavorful fajitas made with seasoned chicken, bell peppers, and onions, baked on a sheet pan for easy cleanup.",
 				PrepTimeMinutes = 30,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner,
-					lunch
+					"diner",
+					"lunch"
 				}
 			});
 			
@@ -225,9 +200,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "A classic lasagna with layers of pasta, ricotta cheese, and a medley of sautéed vegetables.",
 				PrepTimeMinutes = 60,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -238,9 +213,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Tender strips of beef in a creamy mushroom sauce served over egg noodles.",
 				PrepTimeMinutes = 50,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -251,9 +226,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Ziti pasta baked with tomato sauce, ground beef, and mozzarella cheese.",
 				PrepTimeMinutes = 45,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					borrelhapje
+					"borrelhapje"
 				}
 			});
 			
@@ -264,9 +239,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Tender and juicy pulled pork slow-cooked to perfection, perfect for sandwiches or tacos.",
 				PrepTimeMinutes = 360,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -277,9 +252,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Sausage links cooked with bell peppers and onions, served over steamed rice or on a hoagie roll.",
 				PrepTimeMinutes = 35,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					borrelhapje
+					"borrelhapje"
 				}
 			});
 			
@@ -290,10 +265,10 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Shredded chicken and cheese wrapped in corn tortillas and baked with enchilada sauce.",
 				PrepTimeMinutes = 40,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner,
-					dessert
+					"diner",
+					"dessert"
 				}
 			});
 			
@@ -304,9 +279,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "A refreshing salad with cucumber, tomatoes, feta cheese, and kalamata olives tossed in a lemon and olive oil dressing.",
 				PrepTimeMinutes = 15,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					lunch
+					"lunch"
 				}
 			});
 			
@@ -317,9 +292,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = false,
 				Description = "Meatballs in marinara sauce served on a toasted hoagie roll with melted mozzarella cheese.",
 				PrepTimeMinutes = 30,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			
@@ -330,9 +305,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Crispy salmon cakes made with fresh salmon, breadcrumbs, and seasonings, served with a side of tartar sauce.",
 				PrepTimeMinutes = 25,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					dessert
+					"dessert"
 				}
 			});
 			
@@ -343,9 +318,9 @@ public class ApplicationDbContextInitialiser
 				PlusRecipe = true,
 				Description = "Fettuccine pasta smothered in a creamy Alfredo sauce with grilled chicken and broccoli.",
 				PrepTimeMinutes = 35,
-				Categories = new List<Category>
+				Categories = new List<string>
 				{
-					diner
+					"diner"
 				}
 			});
 			

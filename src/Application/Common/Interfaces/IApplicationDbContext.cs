@@ -9,8 +9,7 @@ public interface IApplicationDbContext
 	DbSet<User> Users { get; }
 	
 	DbSet<Recipe> Recipes { get; }
-
-	DbSet<Category> Categories { get; }
+	
 
 	Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

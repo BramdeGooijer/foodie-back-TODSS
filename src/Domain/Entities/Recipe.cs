@@ -10,7 +10,7 @@ public class Recipe : BaseEntity
 	public List<Requirement> Requirements { get; set; } = new();
 	public List<CookingStep> CookingStep { get; set; } = new();
 	public List<Season> Seasons { get; set; } = new();
-	public List<Category> Categories { get; set; } = new();
+	public List<string> Categories { get; set; } = new();
 	public List<PrepDifficulty> PrepDifficulties { get; set; } = new();
 	public List<DietaryPreference> DietaryPreferences { get; set; } = new();
 	public List<Ingredient> Ingredients { get; set; } = new();
