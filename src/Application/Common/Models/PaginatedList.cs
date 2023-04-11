@@ -2,9 +2,14 @@ namespace Template.Application.Common.Models;
 
 public class PaginatedList<T>
 {
+	private const int DefaultPageSize = 20;
+	private const int MaxPageSize = 100;
+
 	public IList<T> Items { get; }
 
 	public int PageNumber { get; }
+
+	public int PageSize { get; }
 
 	public int TotalPages { get; }
 
@@ -13,14 +18,11 @@ public class PaginatedList<T>
 	public PaginatedList(IList<T> items, int count, int pageNumber, int pageSize)
 	{
 		PageNumber = pageNumber;
-		TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+		PageSize = pageSize;
+		TotalPages = pageSize > 0 ? (int)Math.Ceiling(count / (double)pageSize) : 0;
 		TotalCount = count;
 		Items = items;
 	}
-
-	private const int DefaultPageNumber = 0;
-
-	private const int DefaultPageSize = 20;
 
 	public bool HasPreviousPage => PageNumber > 1;
 
@@ -35,8 +37,13 @@ public class PaginatedList<T>
 		where TSource : BaseEntity
 		where TDestination : IMapFrom<TSource>
 	{
-		pageNumber ??= DefaultPageNumber;
-		pageSize ??= DefaultPageSize;
+		pageNumber = pageNumber is >= 0 ? pageNumber : 0;
+
+		if (pageSize is not >= 0)
+			pageSize = DefaultPageSize;
+
+		if (pageSize > MaxPageSize)
+			pageSize = MaxPageSize;
 
 		var items = await source
 			.Skip(pageNumber.Value * pageSize.Value)

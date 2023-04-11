@@ -2,7 +2,7 @@
 
 public class Allergy : BaseEntity
 {
-	public string typeOfAllergy { get; set; }
+	public string TypeOfAllergy { get; set; }
 
 	public Allergy()
 	{
@@ -10,6 +10,6 @@ public class Allergy : BaseEntity
 
 	public Allergy(string typeOfAllergy)
 	{
-		this.typeOfAllergy = typeOfAllergy;
+		this.TypeOfAllergy = typeOfAllergy;
 	}
 }

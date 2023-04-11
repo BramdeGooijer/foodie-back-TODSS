@@ -5,11 +5,11 @@ using Template.Application.Logic.Oauth2.Models;
 
 namespace Template.Presentation.Controllers;
 
-[Route("OAuth2")]
+[Route("oauth2")]
 public class Oauth2Controller : ApiControllerBase
 {
 	[AllowAnonymous]
-	[HttpPost("Token")]
+	[HttpPost("token")]
 	public async Task<ActionResult<Token>> Create(CreateTokenCommand command)
 	{
 		return Ok(await Mediator.Send(command));

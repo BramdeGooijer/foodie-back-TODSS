@@ -2,7 +2,7 @@
 
 public class CookingStep : BaseEntity
 {
-	public string description { get; set; }
+	public string Description { get; set; }
 
 	public CookingStep()
 	{
@@ -10,6 +10,6 @@ public class CookingStep : BaseEntity
 
 	public CookingStep(string description)
 	{
-		this.description = description;
+		this.Description = description;
 	}
 }

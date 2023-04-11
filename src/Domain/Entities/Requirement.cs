@@ -2,7 +2,7 @@
 
 public class Requirement : BaseEntity
 {
-	public string name { get; set; }
+	public string Name { get; set; }
 
 	public Requirement()
 	{
@@ -10,6 +10,6 @@ public class Requirement : BaseEntity
 
 	public Requirement(string name)
 	{
-		this.name = name;
+		this.Name = name;
 	}
 }

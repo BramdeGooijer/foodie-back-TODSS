@@ -2,8 +2,8 @@
 
 public class DietaryPreference : BaseEntity
 {
-	public string name { get; set; }
-	public List<Recipe> recipes { get; set; } = new();
+	public string Name { get; set; }
+	public List<Recipe> Recipes { get; set; } = new();
 
 	public DietaryPreference()
 	{
@@ -11,7 +11,7 @@ public class DietaryPreference : BaseEntity
 
 	public DietaryPreference(string name, List<Recipe> recipes)
 	{
-		this.name = name;
-		this.recipes = recipes;
+		this.Name = name;
+		this.Recipes = recipes;
 	}
 }

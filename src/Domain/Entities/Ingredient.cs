@@ -4,10 +4,10 @@ namespace Template.Domain.Entities;
 
 public class Ingredient : BaseEntity
 {
-	public string amount { get; set; }
-	public Product product { get; set; }
+	public string Amount { get; set; }
+	public Product Product { get; set; }
 	
-	public List<Recipe> recipes { get; set; } = new();
+	public List<Recipe> Recipes { get; set; } = new();
 
 	public Ingredient()
 	{
@@ -15,8 +15,8 @@ public class Ingredient : BaseEntity
 
 	public Ingredient(string amount, Product product, List<Recipe> recipes)
 	{
-		this.amount = amount;
-		this.product = product;
-		this.recipes = recipes;
+		this.Amount = amount;
+		this.Product = product;
+		this.Recipes = recipes;
 	}
 }

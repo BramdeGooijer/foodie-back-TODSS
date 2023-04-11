@@ -1,14 +1,6 @@
-﻿namespace Template.Domain.Entities;
+namespace Template.Domain.Entities;
 
 public class Category : BaseEntity
 {
-	public string name { get; set; }
-	public Category()
-	{
-	}
-
-	public Category(string name)
-	{
-		this.name = name;
-	}
+	public required string Name { get; set; }
 }

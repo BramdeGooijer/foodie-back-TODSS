@@ -2,8 +2,8 @@
 
 public class PrepDifficulty : BaseEntity
 {
-	public string name { get; set; }
-	public List<Recipe> recipes { get; set; } = new();
+	public string Name { get; set; }
+	public List<Recipe> Recipes { get; set; } = new();
 
 	public PrepDifficulty()
 	{
@@ -11,7 +11,7 @@ public class PrepDifficulty : BaseEntity
 
 	public PrepDifficulty(string name, List<Recipe> recipes)
 	{
-		this.name = name;
-		this.recipes = recipes;
+		this.Name = name;
+		this.Recipes = recipes;
 	}
 }

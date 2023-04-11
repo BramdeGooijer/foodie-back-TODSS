@@ -61,7 +61,7 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		
 		builder.Entity<Recipe>()
-			.HasMany(e => e.allCategories)
+			.HasMany(e => e.Categories)
 			.WithMany();
 	}
 

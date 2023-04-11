@@ -33,7 +33,7 @@ public class ApplicationDbContextInitialiser
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "An error occurred while initialising the database.");
+			_logger.LogError(ex, "An error occurred while initializing the database.");
 			throw;
 		}
 	}
@@ -102,55 +102,82 @@ public class ApplicationDbContextInitialiser
 				}
 			});
 			
-			Category dessert = new Category("Dessert");
-			Category ontbijt = new Category("Ontbijt");
-			Category diner = new Category("Diner");
-			Category lunch = new Category("Lunch");
-			Category drankje = new Category("Drankje");
-			Category borrelhapje = new Category("Borrelhapje");
+			Category dessert = new()
+			{
+				Name = "Dessert"
+			};
+			Category ontbijt = new()
+			{
+				Name = "Ontbijt"
+			};
+			Category diner = new()
+			{
+				Name = "Diner"
+			};
+			Category lunch = new()
+			{
+				Name = "Lunch"
+			};
+			Category drankje = new()
+			{
+				Name = "Drankje"
+			};
+			Category borrelhapje = new()
+			{
+				Name = "Borrelhapje"
+			};
 
-			
-			Recipe recipe = new Recipe("Appeltaart", "subAppelTaart", false, "descriptie", 20);
-			recipe.allCategories.Add(dessert);
+			_context.Recipes.Add(new Recipe
+			{
+				Name = "Appeltaart",
+				SubName = "subAppelTaart",
+				PlusRecipe = false,
+				Description = descriptie,
+				PrepTimeMinutes = 20,
+				Categories = new List<Category>
+				{
+					dessert
+				}
+			});
 
 			Recipe recipe2 = new Recipe("Marrokaanse quinoa salade", "salade", true, "descriptie", 20);
-			recipe2.allCategories.Add(ontbijt);
-			recipe2.allCategories.Add(diner);
+			recipe2.Categories.Add(ontbijt);
+			recipe2.Categories.Add(diner);
 
 			Recipe r6 = new Recipe("Beef and Broccoli Stir Fry", "", false, "Thinly sliced beef and tender-crisp broccoli florets in a savory sauce served over steamed rice.", 25);
-			r6.allCategories.Add(diner);
+			r6.Categories.Add(diner);
 			
 			Recipe r7 = new Recipe("Pesto Pasta Salad", "", true, "Rotini pasta tossed with fresh basil pesto, cherry tomatoes, and diced mozzarella cheese.", 20);
-			r7.allCategories.Add(ontbijt);
-			r7.allCategories.Add(diner);
+			r7.Categories.Add(ontbijt);
+			r7.Categories.Add(diner);
 			Recipe r8 = new Recipe("Creamy Tomato Soup", "", false, "Comforting tomato soup made with fresh tomatoes, cream, and a hint of basil.", 35);
-			r8.allCategories.Add(diner);
+			r8.Categories.Add(diner);
 			Recipe r9 = new Recipe("Chicken Parmesan", "", true, "Breaded chicken breasts smothered in marinara sauce and melted mozzarella cheese.", 40);
-			r9.allCategories.Add(diner);
+			r9.Categories.Add(diner);
 			Recipe r10 = new Recipe("Sheet Pan Fajitas", "", false, "Flavorful fajitas made with seasoned chicken, bell peppers, and onions, baked on a sheet pan for easy cleanup.", 30);
-			r10.allCategories.Add(diner);
-			r10.allCategories.Add(lunch);
+			r10.Categories.Add(diner);
+			r10.Categories.Add(lunch);
 			Recipe r11 = new Recipe("Vegetable Lasagna", "", true, "A classic lasagna with layers of pasta, ricotta cheese, and a medley of sautéed vegetables.", 60);
-			r11.allCategories.Add(diner);
+			r11.Categories.Add(diner);
 			Recipe r12 = new Recipe("Beef Stroganoff", "", true, "Tender strips of beef in a creamy mushroom sauce served over egg noodles.", 50);
-			r12.allCategories.Add(diner);
+			r12.Categories.Add(diner);
 			Recipe r13 = new Recipe("Baked Ziti", "", true, "Ziti pasta baked with tomato sauce, ground beef, and mozzarella cheese.", 45);
-			r13.allCategories.Add(borrelhapje);
+			r13.Categories.Add(borrelhapje);
 			Recipe r14 = new Recipe("Slow Cooker Pulled Pork", "", false, "Tender and juicy pulled pork slow-cooked to perfection, perfect for sandwiches or tacos.", 360);
-			r14.allCategories.Add(diner);
+			r14.Categories.Add(diner);
 			Recipe r15 = new Recipe("Sausage and Peppers", "", false, "Sausage links cooked with bell peppers and onions, served over steamed rice or on a hoagie roll.", 35);
-			r15.allCategories.Add(borrelhapje);
+			r15.Categories.Add(borrelhapje);
 			Recipe r16 = new Recipe("Chicken Enchiladas", "", true, "Shredded chicken and cheese wrapped in corn tortillas and baked with enchilada sauce.", 40);
-			r16.allCategories.Add(diner);
-			r16.allCategories.Add(dessert);
+			r16.Categories.Add(diner);
+			r16.Categories.Add(dessert);
 			Recipe r17 = new Recipe("Greek Salad", "", true, "A refreshing salad with cucumber, tomatoes, feta cheese, and kalamata olives tossed in a lemon and olive oil dressing.", 15);
-			r17.allCategories.Add(lunch);
+			r17.Categories.Add(lunch);
 			Recipe r18 = new Recipe("Meatball Subs", "", false, "Meatballs in marinara sauce served on a toasted hoagie roll with melted mozzarella cheese.", 30);
-			r18.allCategories.Add(diner);
+			r18.Categories.Add(diner);
 			Recipe r19 = new Recipe("Salmon Cakes", "", true, "Crispy salmon cakes made with fresh salmon, breadcrumbs, and seasonings, served with a side of tartar sauce.", 25); 
-			r19.allCategories.Add(dessert);
+			r19.Categories.Add(dessert);
 			Recipe r20 = new Recipe("Chicken Alfredo", "", true, "Fettuccine pasta smothered in a creamy Alfredo sauce with grilled chicken and broccoli.", 35);
-			r20.allCategories.Add(diner);
+			r20.Categories.Add(diner);
 
 
 			_context.Recipes.Add(recipe);
