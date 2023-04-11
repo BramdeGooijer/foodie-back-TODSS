@@ -23,21 +23,6 @@ namespace Template.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("DietaryPreferenceRecipe", b =>
-                {
-                    b.Property<Guid>("DietaryPreferencesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RecipesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("DietaryPreferencesId", "RecipesId");
-
-                    b.HasIndex("RecipesId");
-
-                    b.ToTable("DietaryPreferenceRecipe");
-                });
-
             modelBuilder.Entity("IngredientRecipe", b =>
                 {
                     b.Property<Guid>("IngredientsId")
@@ -185,21 +170,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("IdentityUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("PrepDifficultyRecipe", b =>
-                {
-                    b.Property<Guid>("PrepDifficultiesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RecipesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("PrepDifficultiesId", "RecipesId");
-
-                    b.HasIndex("RecipesId");
-
-                    b.ToTable("PrepDifficultyRecipe");
-                });
-
             modelBuilder.Entity("RecipeSeason", b =>
                 {
                     b.Property<Guid>("RecipesId")
@@ -255,26 +225,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("CookingSteps");
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.DietaryPreference", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DietaryPreference");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.Ingredient", b =>
                 {
                     b.Property<Guid>("Id")
@@ -293,21 +243,6 @@ namespace Template.Infrastructure.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.PrepDifficulty", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PrepDifficulty");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.Product", b =>
@@ -343,12 +278,20 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<List<string>>("DietaryPreferences")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("PlusRecipe")
                         .HasColumnType("boolean");
+
+                    b.Property<List<string>>("PrepDifficulties")
+                        .IsRequired()
+                        .HasColumnType("text[]");
 
                     b.Property<int>("PrepTimeMinutes")
                         .HasColumnType("integer");
@@ -482,6 +425,10 @@ namespace Template.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<List<string>>("DiateryPreferences")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<string>("IdentityId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -610,21 +557,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("DietaryPreferenceRecipe", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.DietaryPreference", null)
-                        .WithMany()
-                        .HasForeignKey("DietaryPreferencesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Template.Domain.Entities.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("IngredientRecipe", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Ingredient", null)
@@ -691,21 +623,6 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PrepDifficultyRecipe", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.PrepDifficulty", null)
-                        .WithMany()
-                        .HasForeignKey("PrepDifficultiesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Template.Domain.Entities.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RecipeSeason", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Recipe", null)
@@ -733,13 +650,6 @@ namespace Template.Infrastructure.Migrations
                     b.HasOne("Template.Domain.Entities.Recipe", null)
                         .WithMany("CookingStep")
                         .HasForeignKey("RecipeId");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.DietaryPreference", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.User", null)
-                        .WithMany("AllDietaryPreferences")
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.Ingredient", b =>
@@ -846,8 +756,6 @@ namespace Template.Infrastructure.Migrations
 
             modelBuilder.Entity("Template.Domain.Entities.User", b =>
                 {
-                    b.Navigation("AllDietaryPreferences");
-
                     b.Navigation("FavouriteRecipes");
                 });
 
