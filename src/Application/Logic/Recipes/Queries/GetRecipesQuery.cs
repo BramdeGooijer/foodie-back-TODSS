@@ -32,8 +32,6 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 			.Include(recipe => recipe.Requirements)
 			.Include(recipe => recipe.Seasons)
 			.Include(recipe => recipe.CookingStep)
-			.Include(recipe => recipe.DietaryPreferences)
-			.Include(recipe => recipe.PrepDifficulties)
 			.OrderBy(recipe => recipe.Name)
 			.AsQueryable();
 
