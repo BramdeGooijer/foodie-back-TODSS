@@ -2,6 +2,7 @@ namespace Template.Application.Dtos;
 
 public class RecipeDto : IMapFrom<Recipe>
 {
+	public Guid id { get; set; }
 	public required string Name { get; set; }
 	public required string SubName { get; set; }
 	public required bool PlusRecipe { get; set; }
