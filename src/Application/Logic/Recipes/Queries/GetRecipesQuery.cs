@@ -5,6 +5,7 @@ public record GetRecipesQuery : IRequest<PaginatedList<RecipeDto>>
 	public int? PageNumber { get; init; }
 	public int? PageSize { get; init; }
 	public string? CategoryName { get; init; }
+	public string? RecipeName { get; init; }
 }
 
 public class GetRecipesQueryValidator : AbstractValidator<GetRecipesQuery>
@@ -37,6 +38,10 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 
 		if (request.CategoryName != null)
 			query = query.Where(r => r.Categories.Any(c => c == request.CategoryName));
+		if (request.RecipeName != null)
+		{
+			query = query.Where(r => r.Name.ToLower().StartsWith(request.RecipeName.ToLower()));
+		}
 		
 		return await query.MapToPaginatedListAsync<Recipe, RecipeDto>(_mapper.ConfigurationProvider, request.PageNumber, request.PageSize, cancellationToken);
 	}
