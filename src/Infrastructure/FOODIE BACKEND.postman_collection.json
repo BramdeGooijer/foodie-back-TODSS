@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "83575910-86a0-4cb6-b096-bef3023ec094",
+		"name": "FOODIE BACKEND",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21287666"
+	},
+	"item": [
+		{
+			"name": "login as admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {\r",
+							"    const authHeader = pm.response.json();\r",
+							"    const token = authHeader.accessToken;\r",
+							"    pm.collectionVariables.set(\"authToken\", token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"user-agent": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin@local\",\r\n    \"password\": \"Admin123!\",\r\n    \"GrantType\": \"password\",\r\n    \"clientid\": \"05004bd2-18d9-402f-9a1b-673fcf1d46e7\"\r\n}"
+				},
+				"url": {
+					"raw": "http://{{ENDPOINT}}/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllRecipes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{ENDPOINT}}/api/recipes?pageSize&Categoryname=&RecipeName=&pageNumber",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"api",
+						"recipes"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": ""
+						},
+						{
+							"key": "Categoryname",
+							"value": ""
+						},
+						{
+							"key": "RecipeName",
+							"value": ""
+						},
+						{
+							"key": "pageNumber",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRecipeByGuid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENDPOINT}}/api/recipes/236d6b4d-1c3c-4749-9050-eb4aaa2bc595",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"api",
+						"recipes",
+						"236d6b4d-1c3c-4749-9050-eb4aaa2bc595"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{authToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ENDPOINT",
+			"value": "192.168.150.235:5001",
+			"type": "string"
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
