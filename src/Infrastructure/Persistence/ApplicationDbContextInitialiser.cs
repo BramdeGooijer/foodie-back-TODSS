@@ -112,7 +112,28 @@ public class ApplicationDbContextInitialiser
 				Categories = new List<string>
 				{
 					"dessert"
+				},
+				Ingredients = new List<Ingredient>
+				{
+					new Ingredient
+					{
+						ingredientName = "appels",
+						Amount = "250 gram",
+						allergies = new List<string>
+						{
+						}
+					},
+					new Ingredient
+					{
+						ingredientName = "suiker",
+						Amount = "1 eetlepel",
+						allergies = new List<string>
+						{
+							"suiker"
+						}
+					}
 				}
+				
 			});
 			_context.Recipes.Add(new Recipe
 			{

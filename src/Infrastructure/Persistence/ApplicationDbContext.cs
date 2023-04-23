@@ -29,10 +29,6 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 
 	public DbSet<Recipe> Recipes => Set<Recipe>();
 
-	public DbSet<Allergy> Allergies => Set<Allergy>();
-	
-	public DbSet<Product> Products => Set<Product>();
-	
 	public DbSet<Ingredient> Ingredients => Set<Ingredient>();
 	
 	public DbSet<Requirement> Requirements => Set<Requirement>();

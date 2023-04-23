@@ -4,9 +4,8 @@ namespace Template.Domain.Entities;
 
 public class Ingredient : BaseEntity
 {
+	public string ingredientName { get; set; }
 	public string Amount { get; set; }
-	public Product Product { get; set; }
-	
-	public List<Recipe> Recipes { get; set; } = new();
+	public List<string> allergies { get; set; }
 
 }

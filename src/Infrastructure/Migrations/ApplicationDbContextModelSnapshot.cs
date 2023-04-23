@@ -23,21 +23,6 @@ namespace Template.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("IngredientRecipe", b =>
-                {
-                    b.Property<Guid>("IngredientsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RecipesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("IngredientsId", "RecipesId");
-
-                    b.HasIndex("RecipesId");
-
-                    b.ToTable("IngredientRecipe");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -185,26 +170,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("RecipeSeason");
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.Allergy", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("TypeOfAllergy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Allergies");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.CookingStep", b =>
                 {
                     b.Property<Guid>("Id")
@@ -235,33 +200,22 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid?>("RecipeId")
                         .HasColumnType("uuid");
+
+                    b.Property<List<string>>("allergies")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("ingredientName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Ingredients");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Amount")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
@@ -557,21 +511,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("IngredientRecipe", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.Ingredient", null)
-                        .WithMany()
-                        .HasForeignKey("IngredientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Template.Domain.Entities.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -638,13 +577,6 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.Allergy", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.Product", null)
-                        .WithMany("AllAllergies")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.CookingStep", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Recipe", null)
@@ -654,13 +586,9 @@ namespace Template.Infrastructure.Migrations
 
             modelBuilder.Entity("Template.Domain.Entities.Ingredient", b =>
                 {
-                    b.HasOne("Template.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
+                    b.HasOne("Template.Domain.Entities.Recipe", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
@@ -737,14 +665,11 @@ namespace Template.Infrastructure.Migrations
                     b.Navigation("Identity");
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.Product", b =>
-                {
-                    b.Navigation("AllAllergies");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
                 {
                     b.Navigation("CookingStep");
+
+                    b.Navigation("Ingredients");
 
                     b.Navigation("Requirements");
                 });
