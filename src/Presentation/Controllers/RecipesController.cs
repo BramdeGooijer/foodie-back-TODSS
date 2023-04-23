@@ -12,4 +12,14 @@ public class RecipesController : ApiControllerBase
 	{
 		return Ok(await Mediator.Send(query, cancellationToken));
 	}
+
+	[HttpGet("{id:guid}")]
+	public async Task<RecipeDto> getRecipeById(Guid id)
+	{
+		return await Mediator.Send(new GetRecipeByIdQuery()
+		{
+			RecipeId = id
+		});;
+	}
+
 }
