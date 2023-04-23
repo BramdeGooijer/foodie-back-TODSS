@@ -19,7 +19,7 @@ public class RecipesController : ApiControllerBase
 		return await Mediator.Send(new GetRecipeByIdQuery()
 		{
 			RecipeId = id
-		});;
+		});
 	}
 
 }
