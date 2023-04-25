@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Template.Domain.Common;
 
@@ -8,31 +9,34 @@ namespace Template.Infrastructure.Persistence;
 internal static class ModelBuilderExtensions
 {
 	/// <summary>
-	/// Save enum values as string in database so changes to the enum do not conflict with existing data in the database.
+	///     Save enum values as string in database so changes to the enum do not conflict with existing data in the database.
 	/// </summary>
 	public static ModelBuilder AddEnumStringConversions(this ModelBuilder builder)
 	{
-        // Add converters for Enums
-        foreach (var property in builder.Model.GetEntityTypes().SelectMany(type => type.GetProperties().Where(property => (Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType).IsEnum)))
-        {
-            var type = typeof(EnumToStringConverter<>).MakeGenericType((Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType));
-            var converter = Activator.CreateInstance(type, new ConverterMappingHints()) as ValueConverter;
+		// Add converters for Enums
+		foreach (IMutableProperty property in builder.Model.GetEntityTypes().SelectMany(type =>
+			         type.GetProperties().Where(property => (Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType).IsEnum)))
+		{
+			Type type = typeof(EnumToStringConverter<>).MakeGenericType(Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType);
+			ValueConverter? converter = Activator.CreateInstance(type, new ConverterMappingHints()) as ValueConverter;
 
-            property.SetValueConverter(converter);
-        }
+			property.SetValueConverter(converter);
+		}
 
-        return builder;
+		return builder;
 	}
 
 	/// <summary>
-	/// Add query filters for all entities of type <see cref="BaseSoftDeletableEntity"/> so they are filtered out in queries when deleted.
+	///     Add query filters for all entities of type <see cref="BaseSoftDeletableEntity" /> so they are filtered out in queries when deleted.
 	/// </summary>
 	[Obsolete("This overwrites all previously applied query filters.")]
 	public static ModelBuilder AddSoftDeleteQueryFilters(this ModelBuilder builder)
 	{
-		foreach (var type in builder.Model.GetEntityTypes().Where(type => type.ClrType.IsSubclassOf(typeof(BaseSoftDeletableEntity))).Select(entityType => entityType.ClrType))
+		foreach (Type type in builder.Model.GetEntityTypes().Where(type => type.ClrType.IsSubclassOf(typeof(BaseSoftDeletableEntity)))
+			         .Select(entityType => entityType.ClrType))
 		{
-			MethodInfo method = typeof(ModelBuilderExtensions).GetMethod(nameof(ApplySoftDeleteQueryFilter), BindingFlags.NonPublic | BindingFlags.Static)!;
+			MethodInfo method =
+				typeof(ModelBuilderExtensions).GetMethod(nameof(ApplySoftDeleteQueryFilter), BindingFlags.NonPublic | BindingFlags.Static)!;
 			MethodInfo generic = method.MakeGenericMethod(type);
 
 			generic.Invoke(typeof(ModelBuilderExtensions), new object?[] { builder });

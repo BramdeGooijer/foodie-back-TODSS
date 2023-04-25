@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MediatR;
+﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Template.Domain.Common;
 
 namespace Template.Infrastructure.Common;
@@ -8,19 +8,21 @@ public static class MediatorExtensions
 {
 	public static async Task DispatchDomainEvents(this IMediator mediator, DbContext context)
 	{
-		var entities = context.ChangeTracker
+		List<BaseEntity> entities = context.ChangeTracker
 			.Entries<BaseEntity>()
 			.Where(entry => entry.Entity.DomainEvents.Any())
 			.Select(entry => entry.Entity)
 			.ToList();
 
-		var domainEvents = entities
+		List<BaseEvent> domainEvents = entities
 			.SelectMany(entity => entity.DomainEvents)
 			.ToList();
 
 		entities.ToList().ForEach(e => e.ClearDomainEvents());
 
-		foreach (var domainEvent in domainEvents)
+		foreach (BaseEvent domainEvent in domainEvents)
+		{
 			await mediator.Publish(domainEvent);
+		}
 	}
 }

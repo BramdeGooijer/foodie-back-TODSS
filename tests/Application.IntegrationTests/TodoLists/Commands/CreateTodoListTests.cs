@@ -1,8 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Template.Application.Common.Exceptions;
-using Template.Application.Logic.TodoLists.Commands;
-using Template.Domain.Entities;
 
 namespace Template.Application.IntegrationTests.TodoLists.Commands;
 
@@ -37,7 +35,7 @@ public class CreateTodoListTests : BaseTestFixture
 	[Test]
 	public async Task ShouldCreateTodoList()
 	{
-		var userId = await RunAsDefaultUserAsync();
+		string userId = await RunAsDefaultUserAsync();
 
 		var command = new CreateTodoListCommand
 		{

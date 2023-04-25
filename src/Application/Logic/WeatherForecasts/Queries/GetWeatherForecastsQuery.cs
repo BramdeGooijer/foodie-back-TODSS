@@ -11,7 +11,7 @@ public class GetWeatherForecastsQueryHandler : RequestHandler<GetWeatherForecast
 
 	protected override IEnumerable<WeatherForecastVm> Handle(GetWeatherForecastsQuery request)
 	{
-		var rng = new Random();
+		Random rng = new();
 
 		return Enumerable.Range(1, 5).Select(index => new WeatherForecastVm
 		{

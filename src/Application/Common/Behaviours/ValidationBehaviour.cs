@@ -1,11 +1,12 @@
+using FluentValidation.Results;
 using ValidationException = Template.Application.Common.Exceptions.ValidationException;
 
 namespace Template.Application.Common.Behaviours;
 
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-	private readonly IEnumerable<IValidator<TRequest>> _validators;
 	private readonly IRequestService _requestService;
+	private readonly IEnumerable<IValidator<TRequest>> _validators;
 
 	public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators, IRequestService requestService)
 	{
@@ -17,18 +18,22 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
 	{
 		if (_validators.Any())
 		{
-			var context = new ValidationContext<TRequest>(request);
+			ValidationContext<TRequest> context = new(request);
 
-			var validationResults = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
+			ValidationResult[] validationResults =
+				await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
 
-			var failures = validationResults
+			List<ValidationFailure> failures = validationResults
 				.Where(validationResult => validationResult.Errors.Any())
 				.SelectMany(validationResult => validationResult.Errors)
 				.ToList();
 
 			if (failures.Any())
+			{
 				throw new ValidationException(failures, _requestService.AcceptLanguage is not null);
+			}
 		}
+
 		return await next();
 	}
 }

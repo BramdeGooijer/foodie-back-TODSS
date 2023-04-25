@@ -28,21 +28,25 @@ internal class GetRecipesQueryHandler : IRequestHandler<GetRecipesQuery, Paginat
 
 	public async Task<PaginatedList<RecipeDto>> Handle(GetRecipesQuery request, CancellationToken cancellationToken)
 	{
-		var query = _context.Recipes
+		IQueryable<Recipe> query = _context.Recipes
 			.Include(recipe => recipe.Ingredients)
 			.Include(recipe => recipe.Requirements)
 			.Include(recipe => recipe.Seasons)
-			.Include(recipe => recipe.CookingStep)
+			.Include(recipe => recipe.CookingSteps)
 			.OrderBy(recipe => recipe.Name)
 			.AsQueryable();
 
 		if (request.CategoryName != null)
+		{
 			query = query.Where(r => r.Categories.Any(c => c == request.CategoryName));
+		}
+
 		if (request.RecipeName != null)
 		{
 			query = query.Where(r => r.Name.ToLower().StartsWith(request.RecipeName.ToLower()));
 		}
-		
-		return await query.MapToPaginatedListAsync<Recipe, RecipeDto>(_mapper.ConfigurationProvider, request.PageNumber, request.PageSize, cancellationToken);
+
+		return await query.MapToPaginatedListAsync<Recipe, RecipeDto>(_mapper.ConfigurationProvider, request.PageNumber, request.PageSize,
+			cancellationToken);
 	}
 }

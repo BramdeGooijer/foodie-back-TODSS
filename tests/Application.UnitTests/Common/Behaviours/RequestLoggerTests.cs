@@ -1,17 +1,15 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using Template.Application.Common.Behaviours;
 using Template.Application.Common.Interfaces;
-using Template.Application.Logic.TodoItems.Commands;
 
 namespace Template.Application.UnitTests.Common.Behaviours;
 
 public class RequestLoggerTests
 {
-	private Mock<ILogger<CreateTodoItemCommand>> _logger = null!;
 	private Mock<ICurrentUserService> _currentUserService = null!;
 	private Mock<IIdentityService> _identityService = null!;
+	private Mock<ILogger<CreateTodoItemCommand>> _logger = null!;
 
 	[SetUp]
 	public void Setup()

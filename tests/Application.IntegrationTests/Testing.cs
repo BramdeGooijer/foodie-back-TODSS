@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Respawn;
-using Template.Domain.Entities;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.Persistence;
 using Template.Presentation;
@@ -15,7 +14,7 @@ using IdentityUser = Template.Infrastructure.Identity.IdentityUser;
 namespace Template.Application.IntegrationTests;
 
 [SetUpFixture]
-public partial class Testing
+public class Testing
 {
 	private static WebApplicationFactory<Program> _factory = null!;
 	private static IConfiguration _configuration = null!;
@@ -38,9 +37,9 @@ public partial class Testing
 
 	public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+		ISender mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
 		return await mediator.Send(request);
 	}
@@ -62,23 +61,24 @@ public partial class Testing
 
 	public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+		Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager =
+			scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<IdentityUser>>();
 
-		var user = new IdentityUser
+		IdentityUser user = new IdentityUser
 		{
 			UserName = userName,
 			Email = userName
 		};
 
-		var result = await userManager.CreateAsync(user, password);
+		IdentityResult result = await userManager.CreateAsync(user, password);
 
 		if (roles.Any())
 		{
-			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-			foreach (var role in roles)
+			foreach (string role in roles)
 			{
 				await roleManager.CreateAsync(new IdentityRole(role));
 			}
@@ -93,7 +93,7 @@ public partial class Testing
 			return _currentUserId;
 		}
 
-		var errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
+		string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
 
 		throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
 	}
@@ -108,9 +108,9 @@ public partial class Testing
 	public static async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)
 		where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		return await context.FindAsync<TEntity>(keyValues);
 	}
@@ -118,9 +118,9 @@ public partial class Testing
 	public static async Task AddAsync<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		context.Add(entity);
 
@@ -129,9 +129,9 @@ public partial class Testing
 
 	public static async Task<int> CountAsync<TEntity>() where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		return await context.Set<TEntity>().CountAsync();
 	}

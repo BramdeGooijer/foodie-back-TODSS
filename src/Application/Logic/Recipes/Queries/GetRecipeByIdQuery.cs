@@ -1,11 +1,10 @@
 ﻿namespace Template.Application.Logic.Recipes.Queries;
 
-
 public record GetRecipeByIdQuery : IRequest<RecipeDto>
 {
 	public Guid RecipeId { get; init; }
-	
-	
+
+
 	internal class GetRecipeByIdHandler : IRequestHandler<GetRecipeByIdQuery, RecipeDto>
 	{
 		private readonly IApplicationDbContext _context;
@@ -19,11 +18,11 @@ public record GetRecipeByIdQuery : IRequest<RecipeDto>
 
 		public async Task<RecipeDto> Handle(GetRecipeByIdQuery request, CancellationToken cancellationToken)
 		{
-			var query = await _context.Recipes
+			RecipeDto? query = await _context.Recipes
 				.Include(recipe => recipe.Ingredients)
 				.Include(recipe => recipe.Requirements)
 				.Include(recipe => recipe.Seasons)
-				.Include(recipe => recipe.CookingStep)
+				.Include(recipe => recipe.CookingSteps)
 				.Where(recipe => recipe.Id.Equals(request.RecipeId))
 				.ProjectTo<RecipeDto>(_mapper.ConfigurationProvider).FirstAsync(cancellationToken);
 

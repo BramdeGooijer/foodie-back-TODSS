@@ -1,8 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Template.Application.Common.Exceptions;
-using Template.Application.Logic.TodoLists.Commands;
-using Template.Domain.Entities;
 
 namespace Template.Application.IntegrationTests.TodoLists.Commands;
 
@@ -37,15 +35,15 @@ public class UpdateTodoListTests : BaseTestFixture
 		};
 
 		(await FluentActions.Invoking(() =>
-			SendAsync(command))
+					SendAsync(command))
 				.Should().ThrowAsync<ValidationException>().Where(ex => ex.Errors.ContainsKey("Title")))
-				.And.Errors["Title"].Should().Contain("The specified title already exists.");
+			.And.Errors["Title"].Should().Contain("The specified title already exists.");
 	}
 
 	[Test]
 	public async Task ShouldUpdateTodoList()
 	{
-		var userId = await RunAsDefaultUserAsync();
+		string userId = await RunAsDefaultUserAsync();
 
 		var listId = await SendAsync(new CreateTodoListCommand
 		{

@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Template.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,23 +76,6 @@ namespace Template.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Seasons", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TodoLists",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    ColourCode = table.Column<string>(name: "Colour_Code", type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoLists", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -243,33 +226,6 @@ namespace Template.Infrastructure.Migrations
                         name: "FK_Users_IdentityUsers_IdentityId",
                         column: x => x.IdentityId,
                         principalTable: "IdentityUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TodoItems",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ListId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    Note = table.Column<string>(type: "text", nullable: true),
-                    Priority = table.Column<string>(type: "text", nullable: false),
-                    Reminder = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    Done = table.Column<bool>(type: "boolean", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
-                    LastModifiedBy = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TodoItems_TodoLists_ListId",
-                        column: x => x.ListId,
-                        principalTable: "TodoLists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -452,11 +408,6 @@ namespace Template.Infrastructure.Migrations
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TodoItems_ListId",
-                table: "TodoItems",
-                column: "ListId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_IdentityId",
                 table: "Users",
                 column: "IdentityId",
@@ -497,9 +448,6 @@ namespace Template.Infrastructure.Migrations
                 name: "Requirements");
 
             migrationBuilder.DropTable(
-                name: "TodoItems");
-
-            migrationBuilder.DropTable(
                 name: "IdentityRoles");
 
             migrationBuilder.DropTable(
@@ -510,9 +458,6 @@ namespace Template.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Recipes");
-
-            migrationBuilder.DropTable(
-                name: "TodoLists");
 
             migrationBuilder.DropTable(
                 name: "Users");

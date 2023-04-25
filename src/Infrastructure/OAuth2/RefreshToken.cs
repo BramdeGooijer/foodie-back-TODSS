@@ -15,7 +15,7 @@ public class RefreshToken
 
 	private static string NewToken()
 	{
-		var randomNumber = new byte[32];
+		byte[] randomNumber = new byte[32];
 		RandomNumberGenerator.Create().GetBytes(randomNumber);
 		return Convert.ToBase64String(randomNumber);
 	}

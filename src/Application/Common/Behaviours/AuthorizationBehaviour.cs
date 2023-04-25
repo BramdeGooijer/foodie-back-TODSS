@@ -17,24 +17,27 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
 
 	public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
 	{
-		var authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>().ToList();
+		List<AuthorizeAttribute> authorizeAttributes = request.GetType().GetCustomAttributes<AuthorizeAttribute>().ToList();
 
 		if (authorizeAttributes.Any())
 		{
 			// Must be authenticated user
 			if (_currentUserService.UserId is null)
+			{
 				throw new UnauthorizedAccessException();
+			}
 
 			// Role-based authorization
-			var authorizeAttributesWithRoles = authorizeAttributes.Where(authorizeAttribute => !string.IsNullOrWhiteSpace(authorizeAttribute.Roles)).ToList();
+			List<AuthorizeAttribute> authorizeAttributesWithRoles =
+				authorizeAttributes.Where(authorizeAttribute => !string.IsNullOrWhiteSpace(authorizeAttribute.Roles)).ToList();
 
 			if (authorizeAttributesWithRoles.Any())
 			{
-				var authorized = false;
+				bool authorized = false;
 
-				foreach (var roles in authorizeAttributesWithRoles.Select(authorizeAttribute => authorizeAttribute.Roles.Split(',')))
+				foreach (string[] roles in authorizeAttributesWithRoles.Select(authorizeAttribute => authorizeAttribute.Roles.Split(',')))
 				{
-					foreach (var role in roles)
+					foreach (string role in roles)
 					{
 						if (await _identityService.IsInRoleAsync(_currentUserService.UserId, role.Trim()))
 						{
@@ -46,17 +49,22 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
 
 				// Must be a member of at least one role in roles
 				if (!authorized)
+				{
 					throw new ForbiddenAccessException();
+				}
 			}
 
 			// Policy-based authorization
-			var authorizeAttributesWithPolicies = authorizeAttributes.Where(authorizeAttribute => !string.IsNullOrWhiteSpace(authorizeAttribute.Policy)).ToList();
+			List<AuthorizeAttribute> authorizeAttributesWithPolicies =
+				authorizeAttributes.Where(authorizeAttribute => !string.IsNullOrWhiteSpace(authorizeAttribute.Policy)).ToList();
 			if (authorizeAttributesWithPolicies.Any())
 			{
-				foreach (var policy in authorizeAttributesWithPolicies.Select(authorizeAttribute => authorizeAttribute.Policy))
+				foreach (string policy in authorizeAttributesWithPolicies.Select(authorizeAttribute => authorizeAttribute.Policy))
 				{
 					if (!await _identityService.AuthorizeAsync(_currentUserService.UserId, policy))
+					{
 						throw new ForbiddenAccessException();
+					}
 				}
 			}
 		}

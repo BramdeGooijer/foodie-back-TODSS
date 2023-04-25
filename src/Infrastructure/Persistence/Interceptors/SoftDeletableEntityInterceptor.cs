@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Template.Application.Common.Interfaces;
 using Template.Domain.Common;
@@ -21,7 +22,8 @@ public class SoftDeletableEntityInterceptor : SaveChangesInterceptor
 		return base.SavingChanges(eventData, result);
 	}
 
-	public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+	public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
+		CancellationToken cancellationToken = default)
 	{
 		UpdateEntities(eventData.Context);
 
@@ -31,9 +33,11 @@ public class SoftDeletableEntityInterceptor : SaveChangesInterceptor
 	public void UpdateEntities(DbContext? context)
 	{
 		if (context is null)
+		{
 			return;
+		}
 
-		foreach (var entry in context.ChangeTracker.Entries<BaseSoftDeletableEntity>())
+		foreach (EntityEntry<BaseSoftDeletableEntity> entry in context.ChangeTracker.Entries<BaseSoftDeletableEntity>())
 		{
 			if (entry.State is EntityState.Deleted)
 			{

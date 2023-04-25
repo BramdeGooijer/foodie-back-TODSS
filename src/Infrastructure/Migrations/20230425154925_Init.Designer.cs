@@ -13,8 +13,8 @@ using Template.Infrastructure.Persistence;
 namespace Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230423185227_init")]
-    partial class init
+    [Migration("20230425154925_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -302,80 +302,6 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("Seasons");
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.TodoItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("Done")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ListId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Priority")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("Reminder")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ListId");
-
-                    b.ToTable("TodoItems");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.TodoList", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TodoLists");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -583,7 +509,7 @@ namespace Template.Infrastructure.Migrations
             modelBuilder.Entity("Template.Domain.Entities.CookingStep", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Recipe", null)
-                        .WithMany("CookingStep")
+                        .WithMany("CookingSteps")
                         .HasForeignKey("RecipeId");
                 });
 
@@ -606,40 +532,6 @@ namespace Template.Infrastructure.Migrations
                     b.HasOne("Template.Domain.Entities.Recipe", null)
                         .WithMany("Requirements")
                         .HasForeignKey("RecipeId");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.TodoItem", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.TodoList", "List")
-                        .WithMany("Items")
-                        .HasForeignKey("ListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("List");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.TodoList", b =>
-                {
-                    b.OwnsOne("Template.Domain.ValueObjects.Colour", "Colour", b1 =>
-                        {
-                            b1.Property<Guid>("TodoListId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Code")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("TodoListId");
-
-                            b1.ToTable("TodoLists");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TodoListId");
-                        });
-
-                    b.Navigation("Colour")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.User", b =>
@@ -670,16 +562,11 @@ namespace Template.Infrastructure.Migrations
 
             modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
                 {
-                    b.Navigation("CookingStep");
+                    b.Navigation("CookingSteps");
 
                     b.Navigation("Ingredients");
 
                     b.Navigation("Requirements");
-                });
-
-            modelBuilder.Entity("Template.Domain.Entities.TodoList", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.User", b =>

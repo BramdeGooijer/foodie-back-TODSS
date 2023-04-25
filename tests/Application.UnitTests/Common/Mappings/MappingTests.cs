@@ -2,9 +2,6 @@ using System.Runtime.Serialization;
 using AutoMapper;
 using NUnit.Framework;
 using Template.Application.Common.Mappings;
-using Template.Application.Common.Models;
-using Template.Application.Dtos;
-using Template.Domain.Entities;
 
 namespace Template.Application.UnitTests.Common.Mappings;
 
@@ -34,7 +31,7 @@ public class MappingTests
 	[TestCase(typeof(TodoItem), typeof(LookupDto))]
 	public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
 	{
-		var instance = GetInstanceOf(source);
+		object instance = GetInstanceOf(source);
 
 		_mapper.Map(instance, source, destination);
 	}
@@ -42,7 +39,9 @@ public class MappingTests
 	private static object GetInstanceOf(Type type)
 	{
 		if (type.GetConstructor(Type.EmptyTypes) != null)
+		{
 			return Activator.CreateInstance(type)!;
+		}
 
 		// Type without parameterless constructor
 		return FormatterServices.GetUninitializedObject(type);

@@ -16,10 +16,9 @@ public class RecipesController : ApiControllerBase
 	[HttpGet("{id:guid}")]
 	public async Task<RecipeDto> getRecipeById(Guid id)
 	{
-		return await Mediator.Send(new GetRecipeByIdQuery()
+		return await Mediator.Send(new GetRecipeByIdQuery
 		{
 			RecipeId = id
 		});
 	}
-
 }

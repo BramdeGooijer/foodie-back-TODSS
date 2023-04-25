@@ -2,26 +2,26 @@ using Template.Application;
 using Template.Infrastructure;
 using Template.Presentation;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddPresentationServices(builder.Configuration, builder.Environment);
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.InitialiseAndSeedDatabase();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-    app.UseMigrationsEndPoint();
+	app.UseDeveloperExceptionPage();
+	app.UseMigrationsEndPoint();
 }
 else
 {
-    app.UseHsts();
+	app.UseHsts();
 }
 
 if (app.Configuration.GetValue<bool>("Swagger"))
@@ -58,5 +58,7 @@ app.Run();
 // Make the implicit Program class public so test projects can access it
 namespace Template.Presentation
 {
-	public partial class Program { }
+	public class Program
+	{
+	}
 }

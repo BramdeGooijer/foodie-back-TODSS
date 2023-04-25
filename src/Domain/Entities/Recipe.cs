@@ -8,7 +8,7 @@ public class Recipe : BaseEntity
 	public required string Description { get; set; }
 	public required int PrepTimeMinutes { get; set; }
 	public List<Requirement> Requirements { get; set; } = new();
-	public List<CookingStep> CookingStep { get; set; } = new();
+	public List<CookingStep> CookingSteps { get; set; } = new();
 	public List<Season> Seasons { get; set; } = new();
 	public List<string> Categories { get; set; } = new();
 	public List<string> PrepDifficulties { get; set; } = new();

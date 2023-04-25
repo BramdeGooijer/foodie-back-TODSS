@@ -5,6 +5,15 @@ public class PaginatedList<T>
 	private const int DefaultPageSize = 20;
 	private const int MaxPageSize = 100;
 
+	public PaginatedList(IList<T> items, int count, int pageNumber, int pageSize)
+	{
+		PageNumber = pageNumber;
+		PageSize = pageSize;
+		TotalPages = pageSize > 0 ? (int)Math.Ceiling(count / (double)pageSize) : 0;
+		TotalCount = count;
+		Items = items;
+	}
+
 	public IList<T> Items { get; }
 
 	public int PageNumber { get; }
@@ -14,15 +23,6 @@ public class PaginatedList<T>
 	public int TotalPages { get; }
 
 	public int TotalCount { get; }
-
-	public PaginatedList(IList<T> items, int count, int pageNumber, int pageSize)
-	{
-		PageNumber = pageNumber;
-		PageSize = pageSize;
-		TotalPages = pageSize > 0 ? (int)Math.Ceiling(count / (double)pageSize) : 0;
-		TotalCount = count;
-		Items = items;
-	}
 
 	public bool HasPreviousPage => PageNumber > 1;
 
@@ -40,17 +40,21 @@ public class PaginatedList<T>
 		pageNumber = pageNumber is >= 0 ? pageNumber : 0;
 
 		if (pageSize is not >= 0)
+		{
 			pageSize = DefaultPageSize;
+		}
 
 		if (pageSize > MaxPageSize)
+		{
 			pageSize = MaxPageSize;
+		}
 
-		var items = await source
+		List<TDestination> items = await source
 			.Skip(pageNumber.Value * pageSize.Value)
 			.Take(pageSize.Value)
 			.MapToListAsync<TSource, TDestination>(configurationProvider, cancellationToken);
 
-		var count = await source.CountAsync(cancellationToken);
+		int count = await source.CountAsync(cancellationToken);
 
 		return new PaginatedList<TDestination>(items, count, pageNumber.Value, pageSize.Value);
 	}
