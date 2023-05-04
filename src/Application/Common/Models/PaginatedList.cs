@@ -54,7 +54,7 @@ public class PaginatedList<T>
 			.Take(pageSize.Value)
 			.MapToListAsync<TSource, TDestination>(configurationProvider, cancellationToken);
 
-		int count = await source.CountAsync(cancellationToken);
+		var count = await source.CountAsync(cancellationToken);
 
 		return new PaginatedList<TDestination>(items, count, pageNumber.Value, pageSize.Value);
 	}

@@ -39,34 +39,26 @@ public class Testing
 	{
 		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		ISender mediator = scope.ServiceProvider.GetRequiredService<ISender>();
+		var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
 		return await mediator.Send(request);
 	}
 
-	public static string? GetCurrentUserId()
-	{
-		return _currentUserId;
-	}
+	public static string? GetCurrentUserId() => _currentUserId;
 
-	public static async Task<string> RunAsDefaultUserAsync()
-	{
-		return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
-	}
+	public static async Task<string> RunAsDefaultUserAsync() => await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
 
-	public static async Task<string> RunAsAdministratorAsync()
-	{
-		return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
-	}
+	public static async Task<string> RunAsAdministratorAsync() =>
+		await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
 
 	public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)
 	{
 		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager =
+		var userManager =
 			scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<IdentityUser>>();
 
-		IdentityUser user = new IdentityUser
+		var user = new IdentityUser
 		{
 			UserName = userName,
 			Email = userName
@@ -76,9 +68,9 @@ public class Testing
 
 		if (roles.Any())
 		{
-			RoleManager<IdentityRole> roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-			foreach (string role in roles)
+			foreach (var role in roles)
 			{
 				await roleManager.CreateAsync(new IdentityRole(role));
 			}
@@ -93,7 +85,7 @@ public class Testing
 			return _currentUserId;
 		}
 
-		string errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
+		var errors = string.Join(Environment.NewLine, result.ToApplicationResult().Errors);
 
 		throw new Exception($"Unable to create {userName}.{Environment.NewLine}{errors}");
 	}
@@ -110,7 +102,7 @@ public class Testing
 	{
 		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		return await context.FindAsync<TEntity>(keyValues);
 	}
@@ -120,7 +112,7 @@ public class Testing
 	{
 		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		context.Add(entity);
 
@@ -131,7 +123,7 @@ public class Testing
 	{
 		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		return await context.Set<TEntity>().CountAsync();
 	}

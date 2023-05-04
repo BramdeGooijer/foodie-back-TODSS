@@ -101,10 +101,7 @@ public class IdentityService : IIdentityService
 			: Result.Success();
 	}
 
-	internal async Task<IdentityUser?> FindByNameAsync(string userName)
-	{
-		return await _userManager.FindByNameAsync(userName);
-	}
+	internal async Task<IdentityUser?> FindByNameAsync(string userName) => await _userManager.FindByNameAsync(userName);
 
 	internal async Task<Result> DeleteUserAsync(IdentityUser user)
 	{

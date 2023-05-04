@@ -56,20 +56,11 @@ public class Colour : ValueObject
 		return colour;
 	}
 
-	public static implicit operator string(Colour colour)
-	{
-		return colour.ToString();
-	}
+	public static implicit operator string(Colour colour) => colour.ToString();
 
-	public static explicit operator Colour(string code)
-	{
-		return From(code);
-	}
+	public static explicit operator Colour(string code) => From(code);
 
-	public override string ToString()
-	{
-		return Code;
-	}
+	public override string ToString() => Code;
 
 	protected override IEnumerable<object> GetEqualityComponents()
 	{

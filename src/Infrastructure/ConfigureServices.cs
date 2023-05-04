@@ -60,7 +60,7 @@ public static class ConfigureServices
 		Task task = Task.Run(async () =>
 		{
 			using IServiceScope scope = app.Services.CreateScope();
-			ApplicationDbContextInitialiser initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+			var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
 			await initialiser.InitialiseAsync();
 			await initialiser.SeedAsync();
 		});

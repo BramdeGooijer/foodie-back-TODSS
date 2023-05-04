@@ -33,11 +33,11 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
 
 			if (authorizeAttributesWithRoles.Any())
 			{
-				bool authorized = false;
+				var authorized = false;
 
-				foreach (string[] roles in authorizeAttributesWithRoles.Select(authorizeAttribute => authorizeAttribute.Roles.Split(',')))
+				foreach (var roles in authorizeAttributesWithRoles.Select(authorizeAttribute => authorizeAttribute.Roles.Split(',')))
 				{
-					foreach (string role in roles)
+					foreach (var role in roles)
 					{
 						if (await _identityService.IsInRoleAsync(_currentUserService.UserId, role.Trim()))
 						{
@@ -59,7 +59,7 @@ public class AuthorizationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRe
 				authorizeAttributes.Where(authorizeAttribute => !string.IsNullOrWhiteSpace(authorizeAttribute.Policy)).ToList();
 			if (authorizeAttributesWithPolicies.Any())
 			{
-				foreach (string policy in authorizeAttributesWithPolicies.Select(authorizeAttribute => authorizeAttribute.Policy))
+				foreach (var policy in authorizeAttributesWithPolicies.Select(authorizeAttribute => authorizeAttribute.Policy))
 				{
 					if (!await _identityService.AuthorizeAsync(_currentUserService.UserId, policy))
 					{

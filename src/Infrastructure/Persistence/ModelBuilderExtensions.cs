@@ -18,7 +18,7 @@ internal static class ModelBuilderExtensions
 			         type.GetProperties().Where(property => (Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType).IsEnum)))
 		{
 			Type type = typeof(EnumToStringConverter<>).MakeGenericType(Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType);
-			ValueConverter? converter = Activator.CreateInstance(type, new ConverterMappingHints()) as ValueConverter;
+			var converter = Activator.CreateInstance(type, new ConverterMappingHints()) as ValueConverter;
 
 			property.SetValueConverter(converter);
 		}

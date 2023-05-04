@@ -10,7 +10,7 @@ public class ColourTests
 	[Test]
 	public void ShouldReturnCorrectColourCode()
 	{
-		string code = "#FFFFFF";
+		var code = "#FFFFFF";
 
 		Colour colour = Colour.From(code);
 
@@ -36,15 +36,13 @@ public class ColourTests
 	[Test]
 	public void ShouldPerformExplicitConversionGivenSupportedColourCode()
 	{
-		Colour colour = (Colour)"#FFFFFF";
+		var colour = (Colour)"#FFFFFF";
 
 		colour.Should().Be(Colour.White);
 	}
 
 	[Test]
-	public void ShouldThrowUnsupportedColourExceptionGivenNotSupportedColourCode()
-	{
+	public void ShouldThrowUnsupportedColourExceptionGivenNotSupportedColourCode() =>
 		FluentActions.Invoking(() => Colour.From("##FF33CC"))
 			.Should().Throw<UnsupportedColourException>();
-	}
 }

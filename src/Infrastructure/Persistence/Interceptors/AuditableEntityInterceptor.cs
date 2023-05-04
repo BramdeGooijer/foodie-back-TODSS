@@ -60,11 +60,9 @@ public class AuditableEntityInterceptor : SaveChangesInterceptor
 
 public static class Extensions
 {
-	public static bool HasChangedOwnedEntities(this EntityEntry entry)
-	{
-		return entry.References.Any(referenceEntry =>
+	public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
+		entry.References.Any(referenceEntry =>
 			referenceEntry.TargetEntry != null &&
 			referenceEntry.TargetEntry.Metadata.IsOwned() &&
 			referenceEntry.TargetEntry.State is EntityState.Added or EntityState.Modified);
-	}
 }

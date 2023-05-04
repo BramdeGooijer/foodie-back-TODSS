@@ -72,9 +72,8 @@ internal class CreateTokenCommandHandler : IRequestHandler<CreateTokenCommand, T
 		_configuration = configuration;
 	}
 
-	public async Task<Token> Handle(CreateTokenCommand request, CancellationToken cancellationToken)
-	{
-		return new Token
+	public async Task<Token> Handle(CreateTokenCommand request, CancellationToken cancellationToken) =>
+		new Token
 		{
 			AccessToken = await _tokenService.CreateAccessTokenAsync(request.Username!),
 			TokenType = TokenType.Bearer,
@@ -82,5 +81,4 @@ internal class CreateTokenCommandHandler : IRequestHandler<CreateTokenCommand, T
 			RefreshToken = await _tokenService.CreateRefreshTokenAsync(request.Username!, request.ClientId!.Value),
 			Roles = await _identityService.GetRolesAsync(request.Username!)
 		};
-	}
 }

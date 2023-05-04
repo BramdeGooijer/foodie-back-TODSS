@@ -17,14 +17,14 @@ public sealed class LoginStepDefinitions
 	{
 		IPlaywright? playwright = await Playwright.CreateAsync();
 
-		BrowserTypeLaunchOptions options = new BrowserTypeLaunchOptions();
+		var options = new BrowserTypeLaunchOptions();
 
 
 		IBrowser browser = await playwright.Chromium.LaunchAsync(options);
 
 		IPage page = await browser.NewPageAsync();
 
-		LoginPage loginPage = new LoginPage(browser, page);
+		var loginPage = new LoginPage(browser, page);
 
 		container.RegisterInstanceAs(playwright);
 		container.RegisterInstanceAs(browser);
@@ -32,10 +32,7 @@ public sealed class LoginStepDefinitions
 	}
 
 	[Given("a logged out user")]
-	public async Task GivenALoggedOutUser()
-	{
-		await _loginPage.GotoAsync();
-	}
+	public async Task GivenALoggedOutUser() => await _loginPage.GotoAsync();
 
 	[When("the user logs in with valid credentials")]
 	public async Task TheUserLogsInWithValidCredentials()
@@ -48,7 +45,7 @@ public sealed class LoginStepDefinitions
 	[Then("they log in successfully")]
 	public async Task TheyLogInSuccessfully()
 	{
-		string? profileLinkText = await _loginPage.ProfileLinkText();
+		var profileLinkText = await _loginPage.ProfileLinkText();
 
 		profileLinkText.Should().NotBeNull();
 		profileLinkText.Should().Be("Hello administrator@localhost");
@@ -65,7 +62,7 @@ public sealed class LoginStepDefinitions
 	[Then("an error is displayed")]
 	public async Task AnErrorIsDisplayed()
 	{
-		bool errorVisible = await _loginPage.InvalidLoginAttemptMessageVisible();
+		var errorVisible = await _loginPage.InvalidLoginAttemptMessageVisible();
 
 		errorVisible.Should().BeTrue();
 	}
@@ -73,8 +70,8 @@ public sealed class LoginStepDefinitions
 	[AfterFeature]
 	public static async Task AfterScenario(IObjectContainer container)
 	{
-		IBrowser? browser = container.Resolve<IBrowser>();
-		IPlaywright? playright = container.Resolve<IPlaywright>();
+		var browser = container.Resolve<IBrowser>();
+		var playright = container.Resolve<IPlaywright>();
 
 		await browser.CloseAsync();
 		playright.Dispose();

@@ -31,8 +31,8 @@ public class TokenService : ITokenService
 		IdentityUser user = await _identityService.FindByNameAsync(userName)
 		                    ?? throw new UnauthorizedAccessException();
 
-		JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-		SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+		var tokenHandler = new JwtSecurityTokenHandler();
+		var tokenDescriptor = new SecurityTokenDescriptor
 		{
 			Subject = new ClaimsIdentity(new Claim[]
 			{
@@ -46,7 +46,7 @@ public class TokenService : ITokenService
 				SecurityAlgorithms.HmacSha256Signature)
 		};
 
-		foreach (string role in await _identityService.GetRolesAsync(userName))
+		foreach (var role in await _identityService.GetRolesAsync(userName))
 		{
 			tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
 		}
@@ -62,7 +62,7 @@ public class TokenService : ITokenService
 		Client client = _context.Clients.FirstOrDefault(client => client.Id == clientId) ??
 		                throw new NotFoundException(nameof(Client), clientId);
 
-		RefreshToken refreshToken = new RefreshToken
+		var refreshToken = new RefreshToken
 		{
 			Identity = user,
 			Client = client
@@ -121,8 +121,8 @@ public class TokenService : ITokenService
 	internal string CreateInternalNetworkAccessToken()
 	{
 		DateTime now = _dateTime.Now;
-		JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-		SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+		var tokenHandler = new JwtSecurityTokenHandler();
+		var tokenDescriptor = new SecurityTokenDescriptor
 		{
 			Subject = new ClaimsIdentity(new Claim[]
 			{

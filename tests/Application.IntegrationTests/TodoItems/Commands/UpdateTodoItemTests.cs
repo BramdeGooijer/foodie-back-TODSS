@@ -18,7 +18,7 @@ public class UpdateTodoItemTests : BaseTestFixture
 	[Test]
 	public async Task ShouldUpdateTodoItem()
 	{
-		string userId = await RunAsDefaultUserAsync();
+		var userId = await RunAsDefaultUserAsync();
 
 		var listId = await SendAsync(new CreateTodoListCommand
 		{

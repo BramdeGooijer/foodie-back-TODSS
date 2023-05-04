@@ -8,17 +8,13 @@ namespace Template.Presentation.Controllers;
 public class RecipesController : ApiControllerBase
 {
 	[HttpGet]
-	public async Task<ActionResult<PaginatedList<RecipeDto>>> GetRecipe([FromQuery] GetRecipesQuery query, CancellationToken cancellationToken)
-	{
-		return Ok(await Mediator.Send(query, cancellationToken));
-	}
+	public async Task<ActionResult<PaginatedList<RecipeDto>>> GetRecipe([FromQuery] GetRecipesQuery query, CancellationToken cancellationToken) =>
+		Ok(await Mediator.Send(query, cancellationToken));
 
 	[HttpGet("{id:guid}")]
-	public async Task<RecipeDto> getRecipeById(Guid id)
-	{
-		return await Mediator.Send(new GetRecipeByIdQuery
+	public async Task<RecipeDto> getRecipeById(Guid id) =>
+		await Mediator.Send(new GetRecipeByIdQuery
 		{
 			RecipeId = id
 		});
-	}
 }

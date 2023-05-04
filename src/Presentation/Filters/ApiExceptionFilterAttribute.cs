@@ -44,9 +44,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
 	private static void HandleValidationException(ExceptionContext context)
 	{
-		ValidationException exception = (ValidationException)context.Exception;
+		var exception = (ValidationException)context.Exception;
 
-		ValidationProblemDetails details = new ValidationProblemDetails(exception.Errors)
+		var details = new ValidationProblemDetails(exception.Errors)
 		{
 			Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
 		};
@@ -58,7 +58,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
 	private static void HandleInvalidModelStateException(ExceptionContext context)
 	{
-		ValidationProblemDetails details = new ValidationProblemDetails(context.ModelState)
+		var details = new ValidationProblemDetails(context.ModelState)
 		{
 			Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
 		};
@@ -70,9 +70,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
 	private static void HandleNotFoundException(ExceptionContext context)
 	{
-		NotFoundException exception = (NotFoundException)context.Exception;
+		var exception = (NotFoundException)context.Exception;
 
-		ProblemDetails details = new ProblemDetails
+		var details = new ProblemDetails
 		{
 			Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
 			Title = "The specified resource was not found.",
@@ -86,7 +86,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
 	private static void HandleUnauthorizedAccessException(ExceptionContext context)
 	{
-		ProblemDetails details = new ProblemDetails
+		var details = new ProblemDetails
 		{
 			Status = StatusCodes.Status401Unauthorized,
 			Title = "Unauthorized",
@@ -103,7 +103,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
 	private static void HandleForbiddenAccessException(ExceptionContext context)
 	{
-		ProblemDetails details = new ProblemDetails
+		var details = new ProblemDetails
 		{
 			Status = StatusCodes.Status403Forbidden,
 			Title = "Forbidden",

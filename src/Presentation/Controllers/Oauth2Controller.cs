@@ -10,8 +10,5 @@ public class Oauth2Controller : ApiControllerBase
 {
 	[AllowAnonymous]
 	[HttpPost("token")]
-	public async Task<ActionResult<Token>> Create(CreateTokenCommand command)
-	{
-		return Ok(await Mediator.Send(command));
-	}
+	public async Task<ActionResult<Token>> Create(CreateTokenCommand command) => Ok(await Mediator.Send(command));
 }

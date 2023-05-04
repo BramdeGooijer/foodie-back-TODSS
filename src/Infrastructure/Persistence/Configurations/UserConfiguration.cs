@@ -7,11 +7,9 @@ namespace Template.Infrastructure.Persistence.Configurations;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {
-	public void Configure(EntityTypeBuilder<User> builder)
-	{
+	public void Configure(EntityTypeBuilder<User> builder) =>
 		builder
 			.HasOne<IdentityUser>()
 			.WithOne()
 			.HasForeignKey<User>(nameof(User.IdentityId));
-	}
 }

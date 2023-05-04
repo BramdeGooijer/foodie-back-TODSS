@@ -66,7 +66,7 @@ public class PurgeTodoListsTests : BaseTestFixture
 
 		await SendAsync(new PurgeTodoListsCommand());
 
-		int count = await CountAsync<TodoList>();
+		var count = await CountAsync<TodoList>();
 
 		count.Should().Be(0);
 	}

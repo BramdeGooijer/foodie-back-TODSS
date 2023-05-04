@@ -19,10 +19,7 @@ public class MappingTests
 	}
 
 	[Test]
-	public void ShouldHaveValidConfiguration()
-	{
-		_configuration.AssertConfigurationIsValid();
-	}
+	public void ShouldHaveValidConfiguration() => _configuration.AssertConfigurationIsValid();
 
 	[Test]
 	[TestCase(typeof(TodoList), typeof(TodoListDto))]
@@ -31,7 +28,7 @@ public class MappingTests
 	[TestCase(typeof(TodoItem), typeof(LookupDto))]
 	public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
 	{
-		object instance = GetInstanceOf(source);
+		var instance = GetInstanceOf(source);
 
 		_mapper.Map(instance, source, destination);
 	}

@@ -32,7 +32,7 @@ public class ValidationExceptionTests
 	[Test]
 	public void MulitpleValidationFailureForMultiplePropertiesCreatesAMultipleElementErrorDictionaryEachWithMultipleValues()
 	{
-		List<ValidationFailure> failures = new List<ValidationFailure>
+		var failures = new List<ValidationFailure>
 		{
 			new("Age", "must be 18 or older"),
 			new("Age", "must be 25 or younger"),

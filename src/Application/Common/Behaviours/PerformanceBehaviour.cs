@@ -30,13 +30,13 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
 		_timer.Stop();
 
-		long elapsedMilliseconds = _timer.ElapsedMilliseconds;
+		var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
 		if (elapsedMilliseconds > 500)
 		{
-			string requestName = typeof(TRequest).Name;
-			string userId = _currentUserService.UserId ?? string.Empty;
-			string? userName = string.IsNullOrEmpty(userId) ? string.Empty : await _identityService.GetUserNameAsync(userId);
+			var requestName = typeof(TRequest).Name;
+			var userId = _currentUserService.UserId ?? string.Empty;
+			var userName = string.IsNullOrEmpty(userId) ? string.Empty : await _identityService.GetUserNameAsync(userId);
 
 			if (_logger.IsEnabled(LogLevel.Warning))
 			{

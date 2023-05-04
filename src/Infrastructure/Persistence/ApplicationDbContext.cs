@@ -57,8 +57,5 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 		builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 	}
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	{
-		optionsBuilder.AddInterceptors(_auditableEntityInterceptor);
-	}
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.AddInterceptors(_auditableEntityInterceptor);
 }
