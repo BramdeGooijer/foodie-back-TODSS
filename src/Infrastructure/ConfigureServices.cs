@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Application.Common.Interfaces;
-using Template.Infrastructure.Files;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.OAuth2;
 using Template.Infrastructure.Persistence;
@@ -51,7 +50,6 @@ public static class ConfigureServices
 		services.AddTransient<IdentityService>();
 		services.AddTransient<IIdentityService, IdentityService>();
 		services.AddTransient<ITokenService, TokenService>();
-		services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 		services.AddTransient<IDateTime, DateTimeService>();
 
 		return services;
@@ -59,9 +57,9 @@ public static class ConfigureServices
 
 	public static WebApplication InitialiseAndSeedDatabase(this WebApplication app)
 	{
-		var task = Task.Run(async () =>
+		Task task = Task.Run(async () =>
 		{
-			using var scope = app.Services.CreateScope();
+			using IServiceScope scope = app.Services.CreateScope();
 			var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
 			await initialiser.InitialiseAsync();
 			await initialiser.SeedAsync();

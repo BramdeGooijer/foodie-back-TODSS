@@ -2,25 +2,27 @@ namespace Template.Application.Common.Models;
 
 public class PaginatedList<T>
 {
-	public IList<T> Items { get; }
-
-	public int PageNumber { get; }
-
-	public int TotalPages { get; }
-
-	public int TotalCount { get; }
+	private const int DefaultPageSize = 20;
+	private const int MaxPageSize = 100;
 
 	public PaginatedList(IList<T> items, int count, int pageNumber, int pageSize)
 	{
 		PageNumber = pageNumber;
-		TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+		PageSize = pageSize;
+		TotalPages = pageSize > 0 ? (int)Math.Ceiling(count / (double)pageSize) : 0;
 		TotalCount = count;
 		Items = items;
 	}
 
-	private const int DefaultPageNumber = 0;
+	public IList<T> Items { get; }
 
-	private const int DefaultPageSize = 20;
+	public int PageNumber { get; }
+
+	public int PageSize { get; }
+
+	public int TotalPages { get; }
+
+	public int TotalCount { get; }
 
 	public bool HasPreviousPage => PageNumber > 1;
 
@@ -35,10 +37,19 @@ public class PaginatedList<T>
 		where TSource : BaseEntity
 		where TDestination : IMapFrom<TSource>
 	{
-		pageNumber ??= DefaultPageNumber;
-		pageSize ??= DefaultPageSize;
+		pageNumber = pageNumber is >= 0 ? pageNumber : 0;
 
-		var items = await source
+		if (pageSize is not >= 0)
+		{
+			pageSize = DefaultPageSize;
+		}
+
+		if (pageSize > MaxPageSize)
+		{
+			pageSize = MaxPageSize;
+		}
+
+		List<TDestination> items = await source
 			.Skip(pageNumber.Value * pageSize.Value)
 			.Take(pageSize.Value)
 			.MapToListAsync<TSource, TDestination>(configurationProvider, cancellationToken);

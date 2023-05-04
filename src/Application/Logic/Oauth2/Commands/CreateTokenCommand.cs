@@ -15,7 +15,7 @@ public record CreateTokenCommand : IRequest<Token>
 	public string? RefreshToken { get; init; }
 
 	public string? RedirectUri { get; init; }
-	
+
 	public Guid? ClientId { get; init; }
 
 	public string? ClientSecret { get; init; }
@@ -47,7 +47,7 @@ public class CreateTokenCommandValidator : AbstractValidator<CreateTokenCommand>
 				.NotEmpty()
 				.MustAsync((command, _, _) => identityService.CheckPasswordSignInAsync(command.Username!, command.Password!))
 				.WithMessage("UsernameOrPasswordIncorrect"));
-		
+
 		When(command => command.GrantType is GrantType.RefreshToken && command.Username is not null, () =>
 			RuleFor(command => command.RefreshToken)
 				.Cascade(CascadeMode.Stop)
@@ -61,9 +61,9 @@ public class CreateTokenCommandValidator : AbstractValidator<CreateTokenCommand>
 
 internal class CreateTokenCommandHandler : IRequestHandler<CreateTokenCommand, Token>
 {
-	private readonly ITokenService _tokenService;
 	private readonly IConfiguration _configuration;
 	private readonly IIdentityService _identityService;
+	private readonly ITokenService _tokenService;
 
 	public CreateTokenCommandHandler(ITokenService tokenService, IIdentityService identityService, IConfiguration configuration)
 	{
@@ -72,15 +72,13 @@ internal class CreateTokenCommandHandler : IRequestHandler<CreateTokenCommand, T
 		_configuration = configuration;
 	}
 
-	public async Task<Token> Handle(CreateTokenCommand request, CancellationToken cancellationToken)
-	{
-		return new Token
+	public async Task<Token> Handle(CreateTokenCommand request, CancellationToken cancellationToken) =>
+		new Token
 		{
 			AccessToken = await _tokenService.CreateAccessTokenAsync(request.Username!),
 			TokenType = TokenType.Bearer,
 			ExpiresIn = int.Parse(_configuration["Authentication:Oauth2:TokenDuration"]!),
 			RefreshToken = await _tokenService.CreateRefreshTokenAsync(request.Username!, request.ClientId!.Value),
-			Roles = await _identityService.GetRolesAsync(request.Username!) 
+			Roles = await _identityService.GetRolesAsync(request.Username!)
 		};
-	}
 }

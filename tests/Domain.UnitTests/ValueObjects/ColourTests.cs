@@ -12,7 +12,7 @@ public class ColourTests
 	{
 		var code = "#FFFFFF";
 
-		var colour = Colour.From(code);
+		Colour colour = Colour.From(code);
 
 		colour.Code.Should().Be(code);
 	}
@@ -20,7 +20,7 @@ public class ColourTests
 	[Test]
 	public void ToStringReturnsCode()
 	{
-		var colour = Colour.White;
+		Colour colour = Colour.White;
 
 		colour.ToString().Should().Be(colour.Code);
 	}
@@ -42,9 +42,7 @@ public class ColourTests
 	}
 
 	[Test]
-	public void ShouldThrowUnsupportedColourExceptionGivenNotSupportedColourCode()
-	{
+	public void ShouldThrowUnsupportedColourExceptionGivenNotSupportedColourCode() =>
 		FluentActions.Invoking(() => Colour.From("##FF33CC"))
 			.Should().Throw<UnsupportedColourException>();
-	}
 }

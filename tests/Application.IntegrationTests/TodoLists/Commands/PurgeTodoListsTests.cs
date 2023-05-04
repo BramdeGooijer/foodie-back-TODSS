@@ -1,9 +1,6 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Template.Application.Common.Exceptions;
-using Template.Application.Common.Security;
-using Template.Application.Logic.TodoLists.Commands;
-using Template.Domain.Entities;
 
 namespace Template.Application.IntegrationTests.TodoLists.Commands;
 

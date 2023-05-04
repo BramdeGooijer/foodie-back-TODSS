@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Respawn;
-using Template.Domain.Entities;
 using Template.Infrastructure.Identity;
 using Template.Infrastructure.Persistence;
 using Template.Presentation;
@@ -15,7 +14,7 @@ using IdentityUser = Template.Infrastructure.Identity.IdentityUser;
 namespace Template.Application.IntegrationTests;
 
 [SetUpFixture]
-public partial class Testing
+public class Testing
 {
 	private static WebApplicationFactory<Program> _factory = null!;
 	private static IConfiguration _configuration = null!;
@@ -38,33 +37,26 @@ public partial class Testing
 
 	public static async Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
 		var mediator = scope.ServiceProvider.GetRequiredService<ISender>();
 
 		return await mediator.Send(request);
 	}
 
-	public static string? GetCurrentUserId()
-	{
-		return _currentUserId;
-	}
+	public static string? GetCurrentUserId() => _currentUserId;
 
-	public static async Task<string> RunAsDefaultUserAsync()
-	{
-		return await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
-	}
+	public static async Task<string> RunAsDefaultUserAsync() => await RunAsUserAsync("test@local", "Testing1234!", Array.Empty<string>());
 
-	public static async Task<string> RunAsAdministratorAsync()
-	{
-		return await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
-	}
+	public static async Task<string> RunAsAdministratorAsync() =>
+		await RunAsUserAsync("administrator@local", "Administrator1234!", new[] { "Administrator" });
 
 	public static async Task<string> RunAsUserAsync(string userName, string password, string[] roles)
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
-		var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+		var userManager =
+			scope.ServiceProvider.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<IdentityUser>>();
 
 		var user = new IdentityUser
 		{
@@ -72,7 +64,7 @@ public partial class Testing
 			Email = userName
 		};
 
-		var result = await userManager.CreateAsync(user, password);
+		IdentityResult result = await userManager.CreateAsync(user, password);
 
 		if (roles.Any())
 		{
@@ -108,7 +100,7 @@ public partial class Testing
 	public static async Task<TEntity?> FindAsync<TEntity>(params object[] keyValues)
 		where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
 		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -118,7 +110,7 @@ public partial class Testing
 	public static async Task AddAsync<TEntity>(TEntity entity)
 		where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
 		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
@@ -129,7 +121,7 @@ public partial class Testing
 
 	public static async Task<int> CountAsync<TEntity>() where TEntity : class
 	{
-		using var scope = _scopeFactory.CreateScope();
+		using IServiceScope scope = _scopeFactory.CreateScope();
 
 		var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 

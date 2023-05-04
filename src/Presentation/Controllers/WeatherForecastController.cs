@@ -6,8 +6,5 @@ namespace Template.Presentation.Controllers;
 public class WeatherForecastController : ApiControllerBase
 {
 	[HttpGet]
-	public async Task<IEnumerable<WeatherForecastVm>> Get()
-	{
-		return await Mediator.Send(new GetWeatherForecastsQuery());
-	}
+	public async Task<IEnumerable<WeatherForecastVm>> Get() => await Mediator.Send(new GetWeatherForecastsQuery());
 }

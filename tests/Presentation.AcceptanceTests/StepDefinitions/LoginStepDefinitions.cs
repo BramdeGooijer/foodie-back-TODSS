@@ -15,14 +15,14 @@ public sealed class LoginStepDefinitions
 	[BeforeFeature("Login")]
 	public static async Task BeforeLoginScenario(IObjectContainer container)
 	{
-		var playwright = await Playwright.CreateAsync();
+		IPlaywright? playwright = await Playwright.CreateAsync();
 
 		var options = new BrowserTypeLaunchOptions();
 
 
-		var browser = await playwright.Chromium.LaunchAsync(options);
+		IBrowser browser = await playwright.Chromium.LaunchAsync(options);
 
-		var page = await browser.NewPageAsync();
+		IPage page = await browser.NewPageAsync();
 
 		var loginPage = new LoginPage(browser, page);
 
@@ -32,10 +32,7 @@ public sealed class LoginStepDefinitions
 	}
 
 	[Given("a logged out user")]
-	public async Task GivenALoggedOutUser()
-	{
-		await _loginPage.GotoAsync();
-	}
+	public async Task GivenALoggedOutUser() => await _loginPage.GotoAsync();
 
 	[When("the user logs in with valid credentials")]
 	public async Task TheUserLogsInWithValidCredentials()

@@ -14,18 +14,13 @@ public class LoginPage : BasePage
 
 	public override IPage Page { get; set; }
 
-	public Task SetEmail(string email)
-		=> Page.FillAsync("#Input_Email", email);
+	public Task SetEmail(string email) => Page.FillAsync("#Input_Email", email);
 
-	public Task SetPassword(string password)
-		=> Page.FillAsync("#Input_Password", password);
+	public Task SetPassword(string password) => Page.FillAsync("#Input_Password", password);
 
-	public Task ClickLogin()
-		=> Page.Locator("#login-submit").ClickAsync();
+	public Task ClickLogin() => Page.Locator("#login-submit").ClickAsync();
 
-	public Task<string?> ProfileLinkText()
-		=> Page.Locator("a[href='/authentication/profile']").TextContentAsync();
+	public Task<string?> ProfileLinkText() => Page.Locator("a[href='/authentication/profile']").TextContentAsync();
 
-	public Task<bool> InvalidLoginAttemptMessageVisible()
-		=> Page.Locator("text=Invalid login attempt.").IsVisibleAsync();
+	public Task<bool> InvalidLoginAttemptMessageVisible() => Page.Locator("text=Invalid login attempt.").IsVisibleAsync();
 }

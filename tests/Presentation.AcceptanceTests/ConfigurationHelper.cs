@@ -4,7 +4,9 @@ namespace Template.Presentation.AcceptanceTests;
 
 public static class ConfigurationHelper
 {
-	private readonly static IConfiguration Configuration;
+	private static readonly IConfiguration Configuration;
+
+	private static string? _baseUrl;
 
 	static ConfigurationHelper()
 	{
@@ -13,8 +15,6 @@ public static class ConfigurationHelper
 			.AddEnvironmentVariables()
 			.Build();
 	}
-
-	private static string? _baseUrl;
 
 	public static string GetBaseUrl()
 	{

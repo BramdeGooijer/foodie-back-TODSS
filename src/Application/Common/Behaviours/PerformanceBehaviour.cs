@@ -5,10 +5,10 @@ namespace Template.Application.Common.Behaviours;
 
 public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
-	private readonly Stopwatch _timer;
-	private readonly ILogger<TRequest> _logger;
 	private readonly ICurrentUserService _currentUserService;
 	private readonly IIdentityService _identityService;
+	private readonly ILogger<TRequest> _logger;
+	private readonly Stopwatch _timer;
 
 	public PerformanceBehaviour(
 		ILogger<TRequest> logger,
@@ -26,7 +26,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 	{
 		_timer.Start();
 
-		var response = await next();
+		TResponse response = await next();
 
 		_timer.Stop();
 
@@ -39,8 +39,10 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 			var userName = string.IsNullOrEmpty(userId) ? string.Empty : await _identityService.GetUserNameAsync(userId);
 
 			if (_logger.IsEnabled(LogLevel.Warning))
+			{
 				_logger.LogWarning("Long Running Request: {RequestName} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
 					requestName, elapsedMilliseconds, userId, userName, request);
+			}
 		}
 
 		return response;

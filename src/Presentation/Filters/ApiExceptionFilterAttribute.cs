@@ -12,12 +12,12 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 	{
 		// Register known exception types and handlers.
 		_exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
-			{
-				{ typeof(ValidationException), HandleValidationException },
-				{ typeof(NotFoundException), HandleNotFoundException },
-				{ typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
-				{ typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-			};
+		{
+			{ typeof(ValidationException), HandleValidationException },
+			{ typeof(NotFoundException), HandleNotFoundException },
+			{ typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
+			{ typeof(ForbiddenAccessException), HandleForbiddenAccessException }
+		};
 	}
 
 	public override void OnException(ExceptionContext context)
@@ -39,7 +39,6 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 		if (!context.ModelState.IsValid)
 		{
 			HandleInvalidModelStateException(context);
-			return;
 		}
 	}
 

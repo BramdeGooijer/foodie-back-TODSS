@@ -2,81 +2,68 @@
 
 public class Colour : ValueObject
 {
-    static Colour()
-    {
-    }
+	private Colour()
+	{
+	}
 
-    private Colour()
-    {
-    }
+	private Colour(string code)
+	{
+		Code = code;
+	}
 
-    private Colour(string code)
-    {
-        Code = code;
-    }
+	public static Colour White => new("#FFFFFF");
 
-    public static Colour From(string code)
-    {
-        var colour = new Colour { Code = code };
+	public static Colour Red => new("#FF5733");
 
-        if (!SupportedColours.Contains(colour))
-        {
-            throw new UnsupportedColourException(code);
-        }
+	public static Colour Orange => new("#FFC300");
 
-        return colour;
-    }
+	public static Colour Yellow => new("#FFFF66");
 
-    public static Colour White => new("#FFFFFF");
+	public static Colour Green => new("#CCFF99 ");
 
-    public static Colour Red => new("#FF5733");
+	public static Colour Blue => new("#6666FF");
 
-    public static Colour Orange => new("#FFC300");
+	public static Colour Purple => new("#9966CC");
 
-    public static Colour Yellow => new("#FFFF66");
+	public static Colour Grey => new("#999999");
 
-    public static Colour Green => new("#CCFF99 ");
+	public string Code { get; private init; } = "#000000";
 
-    public static Colour Blue => new("#6666FF");
+	protected static IEnumerable<Colour> SupportedColours
+	{
+		get
+		{
+			yield return White;
+			yield return Red;
+			yield return Orange;
+			yield return Yellow;
+			yield return Green;
+			yield return Blue;
+			yield return Purple;
+			yield return Grey;
+		}
+	}
 
-    public static Colour Purple => new("#9966CC");
+	public static Colour From(string code)
+	{
+		Colour colour = new() { Code = code };
 
-    public static Colour Grey => new("#999999");
+		if (!SupportedColours.Contains(colour))
+		{
+			throw new UnsupportedColourException(code);
+		}
 
-    public string Code { get; private init; } = "#000000";
+		return colour;
+	}
 
-    public static implicit operator string(Colour colour)
-    {
-        return colour.ToString();
-    }
+	public static implicit operator string(Colour colour) => colour.ToString();
 
-    public static explicit operator Colour(string code)
-    {
-        return From(code);
-    }
+	public static explicit operator Colour(string code) => From(code);
 
-    public override string ToString()
-    {
-        return Code;
-    }
+	public override string ToString() => Code;
 
-    protected static IEnumerable<Colour> SupportedColours
-    {
-        get
-        {
-            yield return White;
-            yield return Red;
-            yield return Orange;
-            yield return Yellow;
-            yield return Green;
-            yield return Blue;
-            yield return Purple;
-            yield return Grey;
-        }
-    }
-
-    protected override IEnumerable<object> GetEqualityComponents()
-    {
-        yield return Code;
-    }
+	protected override IEnumerable<object> GetEqualityComponents()
+	{
+		yield return Code;
+	}
 }
