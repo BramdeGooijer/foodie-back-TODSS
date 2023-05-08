@@ -9,6 +9,14 @@ public class ValidationException : Exception
 		Errors = new Dictionary<string, string[]>();
 	}
 
+	public ValidationException(string property, string errorMessage) : this()
+	{
+		Errors = new Dictionary<string, string[]>
+		{
+			{ property, new[] { errorMessage } }
+		};
+	}
+
 	public ValidationException(IEnumerable<ValidationFailure> failures, bool hasLanguage = false) : this()
 	{
 		Errors = failures

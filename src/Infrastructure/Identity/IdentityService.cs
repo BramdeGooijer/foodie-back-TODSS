@@ -26,6 +26,13 @@ public class IdentityService : IIdentityService
 		_authorizationService = authorizationService;
 	}
 
+	public async Task<string?> GetUserIdAsync(string userName)
+	{
+		IdentityUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == userName.ToUpper());
+
+		return user?.Id;
+	}
+
 	public async Task<string?> GetUserNameAsync(string userId)
 	{
 		IdentityUser? user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -38,7 +45,8 @@ public class IdentityService : IIdentityService
 		IdentityUser user = new()
 		{
 			UserName = userName,
-			Email = userName
+			Email = userName,
+			EmailConfirmed = true
 		};
 
 		IdentityResult result = await _userManager.CreateAsync(user, password);
