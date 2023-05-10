@@ -1,0 +1,13 @@
+.git
+.github
+.vs
+tests
+docker.ps
+nuget.config
+**/*.md
+**/bin/
+**/obj/
+**/global.json
+**/Dockerfile
+**/.dockerignore
+**/*.user
