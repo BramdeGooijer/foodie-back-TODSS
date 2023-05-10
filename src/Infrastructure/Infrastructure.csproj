@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<RootNamespace>Template.Infrastructure</RootNamespace>
-		<AssemblyName>Template.Infrastructure</AssemblyName>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -23,12 +22,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Application\Application.csproj"/>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="Files\Maps"/>
-		<Folder Include="Migrations"/>
-		<Folder Include="Migrations\"/>
 	</ItemGroup>
 
 </Project>
