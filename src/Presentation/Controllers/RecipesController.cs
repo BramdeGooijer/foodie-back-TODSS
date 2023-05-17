@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Template.Application.Common.Models;
 using Template.Application.Dtos;
 using Template.Application.Logic.Recipes.Queries;
-using Template.Application.Logic.Users.Queries;
 
 namespace Template.Presentation.Controllers;
 
@@ -13,7 +12,7 @@ public class RecipesController : ApiControllerBase
 		Ok(await Mediator.Send(query, cancellationToken));
 
 	[HttpGet("{id:guid}")]
-	public async Task<RecipeDto> getRecipeById(Guid id) =>
+	public async Task<RecipeDto> GetRecipeById(Guid id) =>
 		await Mediator.Send(new GetRecipeByIdQuery
 		{
 			RecipeId = id

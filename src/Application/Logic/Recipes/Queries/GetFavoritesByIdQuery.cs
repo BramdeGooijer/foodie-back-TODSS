@@ -1,9 +1,9 @@
-﻿namespace Template.Application.Logic.Users.Queries;
+﻿namespace Template.Application.Logic.Recipes.Queries;
 
 public record GetFavoritesByIdQuery : IRequest<PaginatedList<RecipeDto>>
 {
-	public int PageNumber { get; init; }
-	public int PageSize { get; init; }
+	public int? PageNumber { get; init; }
+	public int? PageSize { get; init; }
 	public Guid UserId { get; init; }
 }
 
@@ -30,15 +30,26 @@ public class GetFavoritesByIdHandlerToken : IRequestHandler<GetFavoritesByIdQuer
 	public async Task<PaginatedList<RecipeDto>> Handle(GetFavoritesByIdQuery request, CancellationToken cancellationToken)
 	{
 
-		User? users = await _context.Users
+		User users = await _context.Users
 			.Include(user => user.FavouriteRecipes)
 			.Where(user => user.Id.Equals(request.UserId))
 			.FirstAsync(cancellationToken);
-		List<RecipeDto> recipeDtos = _mapper.Map<List<RecipeDto>>(users.FavouriteRecipes);
-		PaginatedList<RecipeDto> recipeDtosPaginatedList =
-			new PaginatedList<RecipeDto>(recipeDtos, recipeDtos.Count, request.PageNumber, request.PageSize);
 
-		return recipeDtosPaginatedList;
+		List<Guid> recipeIds = new List<Guid>();
+		foreach (var perRecipe in users.FavouriteRecipes)
+		{
+			recipeIds.Add((perRecipe.Id));
+		}
+
+		PaginatedList<RecipeDto> recipes = await _context.Recipes
+			.Include(recipe => recipe.Ingredients)
+			.Include(recipe => recipe.Requirements)
+			.Include(recipe => recipe.Seasons)
+			.Include(recipe => recipe.CookingSteps)
+			.Where(recipe => recipeIds.Contains(recipe.Id))
+			.MapToPaginatedListAsync<Recipe, RecipeDto>(_mapper.ConfigurationProvider, request.PageNumber, request.PageSize, cancellationToken);
+		return recipes;
+
 	}
 	
 }
