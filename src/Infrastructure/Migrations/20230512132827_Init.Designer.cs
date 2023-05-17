@@ -13,7 +13,7 @@ using Template.Infrastructure.Persistence;
 namespace Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230425154925_Init")]
+    [Migration("20230512132827_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -158,19 +158,19 @@ namespace Template.Infrastructure.Migrations
                     b.ToTable("IdentityUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RecipeSeason", b =>
+            modelBuilder.Entity("RecipeUser", b =>
                 {
-                    b.Property<Guid>("RecipesId")
+                    b.Property<Guid>("FavoritedUsersId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SeasonsId")
+                    b.Property<Guid>("FavouriteRecipesId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("RecipesId", "SeasonsId");
+                    b.HasKey("FavoritedUsersId", "FavouriteRecipesId");
 
-                    b.HasIndex("SeasonsId");
+                    b.HasIndex("FavouriteRecipesId");
 
-                    b.ToTable("RecipeSeason");
+                    b.ToTable("RecipeUser");
                 });
 
             modelBuilder.Entity("Template.Domain.Entities.CookingStep", b =>
@@ -257,12 +257,7 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Recipes");
                 });
@@ -293,11 +288,16 @@ namespace Template.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("RecipeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SeasonName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
 
                     b.ToTable("Seasons");
                 });
@@ -491,17 +491,17 @@ namespace Template.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RecipeSeason", b =>
+            modelBuilder.Entity("RecipeUser", b =>
                 {
-                    b.HasOne("Template.Domain.Entities.Recipe", null)
+                    b.HasOne("Template.Domain.Entities.User", null)
                         .WithMany()
-                        .HasForeignKey("RecipesId")
+                        .HasForeignKey("FavoritedUsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Template.Domain.Entities.Season", null)
+                    b.HasOne("Template.Domain.Entities.Recipe", null)
                         .WithMany()
-                        .HasForeignKey("SeasonsId")
+                        .HasForeignKey("FavouriteRecipesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -520,17 +520,17 @@ namespace Template.Infrastructure.Migrations
                         .HasForeignKey("RecipeId");
                 });
 
-            modelBuilder.Entity("Template.Domain.Entities.Recipe", b =>
-                {
-                    b.HasOne("Template.Domain.Entities.User", null)
-                        .WithMany("FavouriteRecipes")
-                        .HasForeignKey("UserId");
-                });
-
             modelBuilder.Entity("Template.Domain.Entities.Requirement", b =>
                 {
                     b.HasOne("Template.Domain.Entities.Recipe", null)
                         .WithMany("Requirements")
+                        .HasForeignKey("RecipeId");
+                });
+
+            modelBuilder.Entity("Template.Domain.Entities.Season", b =>
+                {
+                    b.HasOne("Template.Domain.Entities.Recipe", null)
+                        .WithMany("Seasons")
                         .HasForeignKey("RecipeId");
                 });
 
@@ -567,11 +567,8 @@ namespace Template.Infrastructure.Migrations
                     b.Navigation("Ingredients");
 
                     b.Navigation("Requirements");
-                });
 
-            modelBuilder.Entity("Template.Domain.Entities.User", b =>
-                {
-                    b.Navigation("FavouriteRecipes");
+                    b.Navigation("Seasons");
                 });
 
             modelBuilder.Entity("Template.Infrastructure.Identity.IdentityUser", b =>

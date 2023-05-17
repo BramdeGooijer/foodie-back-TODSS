@@ -14,4 +14,5 @@ public class Recipe : BaseEntity
 	public List<string> PrepDifficulties { get; set; } = new();
 	public List<string> DietaryPreferences { get; set; } = new();
 	public List<Ingredient> Ingredients { get; set; } = new();
+	public IList<User> FavoritedUsers { get; set; } = new List<User>();
 }

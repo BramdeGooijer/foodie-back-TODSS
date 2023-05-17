@@ -49,6 +49,10 @@ public class ApplicationDbContext : OAuthDbContext<IdentityUser>, IApplicationDb
 	{
 		base.OnModelCreating(builder);
 
+		builder.Entity<User>()
+			.HasMany(e => e.FavouriteRecipes)
+			.WithMany(e => e.FavoritedUsers);
+
 		builder.ConfigureIdentity();
 		builder.ConfigureOAuth2();
 
