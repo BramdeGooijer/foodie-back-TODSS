@@ -2,6 +2,8 @@
 
 public record GetFavoritesByIdQuery : IRequest<PaginatedList<RecipeDto>>
 {
+	public int PageNumber { get; init; }
+	public int PageSize { get; init; }
 	public Guid UserId { get; init; }
 }
 
@@ -25,15 +27,18 @@ public class GetFavoritesByIdHandlerToken : IRequestHandler<GetFavoritesByIdQuer
 		_mapper = mapper;
 	}
 
-	public Task<PaginatedList<RecipeDto>> Handle(GetFavoritesByIdQuery request, CancellationToken cancellationToken)
+	public async Task<PaginatedList<RecipeDto>> Handle(GetFavoritesByIdQuery request, CancellationToken cancellationToken)
 	{
-		var configuration = new Mapper
-		
-		List<Recipe> recipes = _context.Users
-			.Where(user => user.Id.Equals(request.UserId))
+
+		User? users = await _context.Users
 			.Include(user => user.FavouriteRecipes)
-			.pro
-		return null;
+			.Where(user => user.Id.Equals(request.UserId))
+			.FirstAsync(cancellationToken);
+		List<RecipeDto> recipeDtos = _mapper.Map<List<RecipeDto>>(users.FavouriteRecipes);
+		PaginatedList<RecipeDto> recipeDtosPaginatedList =
+			new PaginatedList<RecipeDto>(recipeDtos, recipeDtos.Count, request.PageNumber, request.PageSize);
+
+		return recipeDtosPaginatedList;
 	}
 	
 }
