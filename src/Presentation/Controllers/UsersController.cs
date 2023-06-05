@@ -13,5 +13,12 @@ public class UsersController : ApiControllerBase
 		await Mediator.Send(command, cancellationToken);
 		return NoContent();
 	}
+	
+	[HttpPost("changename")]
+	public async Task<ActionResult> ChangeName(ChangeNameCommand command, CancellationToken cancellationToken)
+	{
+		await Mediator.Send(command, cancellationToken);
+		return NoContent();
+	}
 }
 	
