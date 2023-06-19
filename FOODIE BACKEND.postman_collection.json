@@ -43,8 +43,7 @@
 					"raw": "{\r\n    \"username\": \"admin@local\",\r\n    \"password\": \"Admin123!\",\r\n    \"GrantType\": \"password\",\r\n    \"clientid\": \"05004bd2-18d9-402f-9a1b-673fcf1d46e7\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ENDPOINT}}/oauth2/token",
-					"protocol": "http",
+					"raw": "{{ENDPOINT}}/oauth2/token",
 					"host": [
 						"{{ENDPOINT}}"
 					],
@@ -54,7 +53,45 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "login as admin",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin@local\",\r\n    \"password\": \"Admin123!\",\r\n    \"GrantType\": \"password\",\r\n    \"clientid\": \"05004bd2-18d9-402f-9a1b-673fcf1d46e7\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ENDPOINT}}/oauth2/token",
+							"host": [
+								"{{ENDPOINT}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "getAllRecipes",
@@ -62,8 +99,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ENDPOINT}}/api/recipes?pageSize&Categoryname=&RecipeName=&pageNumber",
-					"protocol": "http",
+					"raw": "{{ENDPOINT}}/api/recipes?pageSize=10&Categoryname=&RecipeName=&pageNumber=0",
 					"host": [
 						"{{ENDPOINT}}"
 					],
@@ -74,7 +110,7 @@
 					"query": [
 						{
 							"key": "pageSize",
-							"value": ""
+							"value": "10"
 						},
 						{
 							"key": "Categoryname",
@@ -86,7 +122,7 @@
 						},
 						{
 							"key": "pageNumber",
-							"value": ""
+							"value": "0"
 						}
 					]
 				}
@@ -111,8 +147,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://{{ENDPOINT}}/api/recipes/236d6b4d-1c3c-4749-9050-eb4aaa2bc595",
-					"protocol": "http",
+					"raw": "{{ENDPOINT}}/api/recipes/236d6b4d-1c3c-4749-9050-eb4aaa2bc595",
 					"host": [
 						"{{ENDPOINT}}"
 					],
@@ -120,6 +155,80 @@
 						"api",
 						"recipes",
 						"236d6b4d-1c3c-4749-9050-eb4aaa2bc595"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"nieuw@local\",\r\n    \"name\": \"testAccount\",\r\n    \"password\": \"Test123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENDPOINT}}/api/users",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFavoriteRecipesByUserId",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{ENDPOINT}}/api/users/favoriterecipes?PageNumber=0&PageSize=20&UserId=3a9fa147-7330-4cc8-9d71-951f0ecacaae",
+					"protocol": "http",
+					"host": [
+						"{{ENDPOINT}}"
+					],
+					"path": [
+						"api",
+						"users",
+						"favoriterecipes"
+					],
+					"query": [
+						{
+							"key": "PageNumber",
+							"value": "0"
+						},
+						{
+							"key": "PageSize",
+							"value": "20"
+						},
+						{
+							"key": "UserId",
+							"value": "3a9fa147-7330-4cc8-9d71-951f0ecacaae"
+						}
 					]
 				}
 			},

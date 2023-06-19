@@ -43,6 +43,7 @@ public static class ConfigureServices
 		{
 			options.Password.RequireNonAlphanumeric = false;
 			options.Password.RequiredLength = 8;
+			options.Password.RequiredUniqueChars = 6;
 			options.SignIn.RequireConfirmedEmail = true;
 			options.User.RequireUniqueEmail = true;
 		});

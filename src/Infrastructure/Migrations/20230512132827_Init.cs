@@ -67,15 +67,22 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Seasons",
+                name: "Recipes",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SeasonName = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    SubName = table.Column<string>(type: "text", nullable: false),
+                    PlusRecipe = table.Column<bool>(type: "boolean", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    PrepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
+                    Categories = table.Column<List<string>>(type: "text[]", nullable: false),
+                    PrepDifficulties = table.Column<List<string>>(type: "text[]", nullable: false),
+                    DietaryPreferences = table.Column<List<string>>(type: "text[]", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Seasons", x => x.Id);
+                    table.PrimaryKey("PK_Recipes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -231,31 +238,6 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recipes",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    SubName = table.Column<string>(type: "text", nullable: false),
-                    PlusRecipe = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    PrepTimeMinutes = table.Column<int>(type: "integer", nullable: false),
-                    Categories = table.Column<List<string>>(type: "text[]", nullable: false),
-                    PrepDifficulties = table.Column<List<string>>(type: "text[]", nullable: false),
-                    DietaryPreferences = table.Column<List<string>>(type: "text[]", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Recipes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Recipes_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CookingSteps",
                 columns: table => new
                 {
@@ -294,30 +276,6 @@ namespace Template.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RecipeSeason",
-                columns: table => new
-                {
-                    RecipesId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SeasonsId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeSeason", x => new { x.RecipesId, x.SeasonsId });
-                    table.ForeignKey(
-                        name: "FK_RecipeSeason_Recipes_RecipesId",
-                        column: x => x.RecipesId,
-                        principalTable: "Recipes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RecipeSeason_Seasons_SeasonsId",
-                        column: x => x.SeasonsId,
-                        principalTable: "Seasons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Requirements",
                 columns: table => new
                 {
@@ -333,6 +291,48 @@ namespace Template.Infrastructure.Migrations
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Seasons",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    SeasonName = table.Column<string>(type: "text", nullable: false),
+                    RecipeId = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Seasons", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Seasons_Recipes_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RecipeUser",
+                columns: table => new
+                {
+                    FavoritedUsersId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FavouriteRecipesId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RecipeUser", x => new { x.FavoritedUsersId, x.FavouriteRecipesId });
+                    table.ForeignKey(
+                        name: "FK_RecipeUser_Recipes_FavouriteRecipesId",
+                        column: x => x.FavouriteRecipesId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RecipeUser_Users_FavoritedUsersId",
+                        column: x => x.FavoritedUsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -383,14 +383,9 @@ namespace Template.Infrastructure.Migrations
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipes_UserId",
-                table: "Recipes",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RecipeSeason_SeasonsId",
-                table: "RecipeSeason",
-                column: "SeasonsId");
+                name: "IX_RecipeUser_FavouriteRecipesId",
+                table: "RecipeUser",
+                column: "FavouriteRecipesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_ClientId",
@@ -405,6 +400,11 @@ namespace Template.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Requirements_RecipeId",
                 table: "Requirements",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Seasons_RecipeId",
+                table: "Seasons",
                 column: "RecipeId");
 
             migrationBuilder.CreateIndex(
@@ -439,7 +439,7 @@ namespace Template.Infrastructure.Migrations
                 name: "Ingredients");
 
             migrationBuilder.DropTable(
-                name: "RecipeSeason");
+                name: "RecipeUser");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
@@ -448,19 +448,19 @@ namespace Template.Infrastructure.Migrations
                 name: "Requirements");
 
             migrationBuilder.DropTable(
+                name: "Seasons");
+
+            migrationBuilder.DropTable(
                 name: "IdentityRoles");
 
             migrationBuilder.DropTable(
-                name: "Seasons");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
                 name: "Recipes");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "IdentityUsers");
