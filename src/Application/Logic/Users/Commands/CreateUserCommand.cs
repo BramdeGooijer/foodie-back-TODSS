@@ -1,5 +1,4 @@
 ﻿
-using System.Security.Principal;
 using ValidationException = Template.Application.Common.Exceptions.ValidationException;
 
 namespace Template.Application.Logic.Users.Commands;
