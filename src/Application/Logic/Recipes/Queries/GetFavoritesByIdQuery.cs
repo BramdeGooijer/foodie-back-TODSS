@@ -4,35 +4,28 @@ public record GetFavoritesByIdQuery : IRequest<PaginatedList<RecipeDto>>
 {
 	public int? PageNumber { get; init; }
 	public int? PageSize { get; init; }
-	public Guid UserId { get; init; }
-}
-
-public class GetFavoritesByIdValidator : AbstractValidator<GetFavoritesByIdQuery>
-{
-	public GetFavoritesByIdValidator()
-	{
-		RuleFor(command => command.UserId)
-			.NotEmpty();
-	}
 }
 
 public class GetFavoritesByIdHandlerToken : IRequestHandler<GetFavoritesByIdQuery, PaginatedList<RecipeDto>>
 {
 	private readonly IApplicationDbContext _context;
+	private readonly ICurrentUserService _userService;
 	private readonly IMapper _mapper;
 
-	public GetFavoritesByIdHandlerToken(IApplicationDbContext context, IMapper mapper)
+	public GetFavoritesByIdHandlerToken(IApplicationDbContext context, IMapper mapper, ICurrentUserService userService)
 	{
 		_context = context;
 		_mapper = mapper;
+		_userService = userService;
 	}
 
 	public async Task<PaginatedList<RecipeDto>> Handle(GetFavoritesByIdQuery request, CancellationToken cancellationToken)
 	{
+		Guid userid = new Guid(_userService.UserId ?? throw new InvalidOperationException());
 
 		User users = await _context.Users
 			.Include(user => user.FavouriteRecipes)
-			.Where(user => user.Id.Equals(request.UserId))
+			.Where(user => user.Id.Equals(userid))
 			.FirstAsync(cancellationToken);
 
 		List<Guid> recipeIds = new List<Guid>();
